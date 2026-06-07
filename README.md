@@ -23,3 +23,19 @@ python3 -m http.server 8000
 ```
 
 Then visit `http://localhost:8000`.
+
+## Build Android APK
+
+Install the npm dependencies and make sure `ANDROID_HOME` points to an Android
+SDK that includes platform 36 and Android build tools:
+
+```bash
+npm install
+npm run build:apk
+```
+
+The debug APK is generated at:
+
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
+```
