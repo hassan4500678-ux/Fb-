@@ -1,0 +1,20 @@
+.env
+.DS_Store
+node_modules/
+coverage/
+dist/
+build/
+*.log
+.build-tools/
+
+# Android / Gradle
+.gradle/
+local.properties
+android/local.properties
+android/app/build/
+android/build/
+*.jks
+*.keystore
+
+# Runtime uploads should live outside git in production
+backend/uploads/

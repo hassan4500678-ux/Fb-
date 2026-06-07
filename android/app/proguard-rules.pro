@@ -1,0 +1,5 @@
+-keep class com.faizanbrothers.ems.MainActivity { *; }
+-keep class com.faizanbrothers.ems.ApiClient { *; }
+-keep class com.faizanbrothers.ems.TokenVault { *; }
+-keep class com.faizanbrothers.ems.SimpleJson { *; }
+-keep class com.faizanbrothers.ems.NeonChartView { *; }
