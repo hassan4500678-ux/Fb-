@@ -72,7 +72,7 @@ public final class MainActivity extends Activity {
 
     private void showLogin() {
         ScrollView scroll = new ScrollView(this);
-        scroll.setBackgroundColor(BG);
+        scroll.setBackgroundResource(R.drawable.ems_neon_backdrop);
         LinearLayout root = column();
         root.setPadding(dp(22), dp(28), dp(22), dp(28));
         scroll.addView(root);
@@ -139,7 +139,7 @@ public final class MainActivity extends Activity {
 
     private void showShell() {
         LinearLayout root = column();
-        root.setBackgroundColor(BG);
+        root.setBackgroundResource(R.drawable.ems_neon_backdrop);
 
         LinearLayout header = row();
         header.setGravity(Gravity.CENTER_VERTICAL);
