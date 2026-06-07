@@ -1,0 +1,8 @@
+<network-security-config>
+    <!-- Production should use HTTPS. Cleartext is enabled only so LAN/staging APIs can be tested on physical devices. -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

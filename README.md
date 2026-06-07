@@ -4,7 +4,8 @@ Production-oriented Android Employee Management System for Faizan & Brothers fie
 
 ## What is included
 
-- Real Android application project that builds signed release APK and AAB artifacts.
+- Real Flutter Android frontend in `flutter_frontend/`.
+- Existing native Android prototype in `android/` with generated artifacts in `artifacts/`.
 - Node.js + Express API.
 - PostgreSQL-only persistent storage with migrations and seed data.
 - No Firebase, Supabase, maps, routing, GPS tracking, background tracking, or demo local storage for business data.
@@ -43,6 +44,26 @@ npm start
 ```
 
 The API starts on port `8080` by default.
+
+## Flutter frontend
+
+The production Flutter frontend lives in `flutter_frontend/`.
+
+```bash
+cd flutter_frontend
+flutter pub get
+flutter analyze
+flutter test
+flutter build apk --release --dart-define=EMS_API_BASE_URL=https://api.your-domain.com
+flutter build appbundle --release --dart-define=EMS_API_BASE_URL=https://api.your-domain.com
+```
+
+Flutter outputs:
+
+- `flutter_frontend/build/app/outputs/flutter-apk/app-release.apk`
+- `flutter_frontend/build/app/outputs/bundle/release/app-release.aab`
+
+The login screen also allows entering the API base URL at runtime. Do not use `localhost` or `127.0.0.1` on a physical phone.
 
 ## Android release build
 

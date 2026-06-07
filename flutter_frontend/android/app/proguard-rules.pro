@@ -1,0 +1,1 @@
+-keep class com.faizanbrothers.ems_flutter.MainActivity { *; }
