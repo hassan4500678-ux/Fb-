@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Attendance Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Workforce operations</p>
+          <h1>Employee Attendance Tracker</h1>
+          <p class="hero-copy">
+            Track daily clock-ins, absences, working hours, and attendance
+            history for your team from one simple dashboard.
+          </p>
+        </div>
+        <div class="date-card" aria-label="Selected attendance date">
+          <label for="attendance-date">Attendance date</label>
+          <input id="attendance-date" type="date" />
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="Attendance summary">
+        <article class="summary-card">
+          <span>Total employees</span>
+          <strong id="total-employees">0</strong>
+        </article>
+        <article class="summary-card present">
+          <span>Currently present</span>
+          <strong id="present-count">0</strong>
+        </article>
+        <article class="summary-card absent">
+          <span>Marked absent</span>
+          <strong id="absent-count">0</strong>
+        </article>
+        <article class="summary-card hours">
+          <span>Total hours</span>
+          <strong id="total-hours">0.0</strong>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <aside class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Roster</p>
+              <h2>Add employee</h2>
+            </div>
+          </div>
+          <form id="employee-form" class="employee-form">
+            <label>
+              Employee name
+              <input
+                id="employee-name"
+                name="employee-name"
+                type="text"
+                placeholder="e.g. Aisha Khan"
+                autocomplete="name"
+                required
+              />
+            </label>
+            <label>
+              Department
+              <input
+                id="employee-department"
+                name="employee-department"
+                type="text"
+                placeholder="e.g. Operations"
+                required
+              />
+            </label>
+            <label>
+              Role
+              <input
+                id="employee-role"
+                name="employee-role"
+                type="text"
+                placeholder="e.g. Shift Lead"
+                required
+              />
+            </label>
+            <button type="submit">Add employee</button>
+          </form>
+        </aside>
+
+        <section class="panel employee-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Today</p>
+              <h2>Employee status</h2>
+            </div>
+            <div class="toolbar">
+              <label class="search-label" for="employee-search">Search</label>
+              <input
+                id="employee-search"
+                type="search"
+                placeholder="Search employees"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div id="employee-list" class="employee-list" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="panel report-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Records</p>
+            <h2>Attendance log</h2>
+          </div>
+          <button id="export-csv" class="secondary-button" type="button">
+            Export CSV
+          </button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Clock in</th>
+                <th>Clock out</th>
+                <th>Hours</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-log"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <template id="employee-card-template">
+      <article class="employee-card">
+        <div class="employee-card-header">
+          <div>
+            <h3></h3>
+            <p class="employee-meta"></p>
+          </div>
+          <span class="status-pill"></span>
+        </div>
+        <dl class="attendance-details">
+          <div>
+            <dt>Clock in</dt>
+            <dd class="clock-in">--</dd>
+          </div>
+          <div>
+            <dt>Clock out</dt>
+            <dd class="clock-out">--</dd>
+          </div>
+          <div>
+            <dt>Hours</dt>
+            <dd class="hours-worked">0.0</dd>
+          </div>
+        </dl>
+        <div class="card-actions">
+          <button class="clock-in-button" type="button">Clock in</button>
+          <button class="clock-out-button" type="button">Clock out</button>
+          <button class="absent-button" type="button">Mark absent</button>
+          <button class="reset-button" type="button" aria-label="Reset attendance">
+            Reset
+          </button>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

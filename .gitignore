@@ -1,0 +1,9 @@
+node_modules/
+www/
+.android-sdk/
+.android-cmdline-tools.zip
+
+# Android build outputs
+android/.gradle/
+android/app/build/
+android/build/

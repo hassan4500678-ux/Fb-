@@ -1,0 +1,29 @@
+{
+  "name": "employee-attendance-tracker",
+  "version": "1.0.0",
+  "description": "A dependency-free browser app for tracking employee attendance. It stores data locally in the browser, so it can be run as a static site with no backend setup.",
+  "private": true,
+  "scripts": {
+    "prepare:web": "node scripts/prepare-web.js",
+    "sync:android": "npm run prepare:web && cap sync android",
+    "build:apk": "npm run sync:android && npm run build:android-debug",
+    "build:android-debug": "cd android && ./gradlew assembleDebug",
+    "check": "node --check app.js && node --check scripts/prepare-web.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hassan4500678-ux/Fb-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hassan4500678-ux/Fb-/issues"
+  },
+  "homepage": "https://github.com/hassan4500678-ux/Fb-#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0"
+  }
+}
