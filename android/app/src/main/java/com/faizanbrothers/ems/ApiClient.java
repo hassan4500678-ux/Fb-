@@ -1,6 +1,7 @@
 package com.faizanbrothers.ems;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -26,12 +27,23 @@ final class ApiClient {
     private final Context context;
     private final TokenVault tokenVault;
     private final ExecutorService executor = Executors.newFixedThreadPool(4);
-    private final String baseUrl;
+    private final SharedPreferences prefs;
 
     ApiClient(Context context, TokenVault tokenVault) {
         this.context = context.getApplicationContext();
         this.tokenVault = tokenVault;
-        this.baseUrl = BuildConfig.API_BASE_URL.replaceAll("/+$", "");
+        this.prefs = this.context.getSharedPreferences("api_settings", Context.MODE_PRIVATE);
+        if (prefs.getString("base_url", null) == null) {
+            setBaseUrl(BuildConfig.API_BASE_URL);
+        }
+    }
+
+    String getBaseUrl() {
+        return normalizeBaseUrl(prefs.getString("base_url", BuildConfig.API_BASE_URL));
+    }
+
+    void setBaseUrl(String baseUrl) {
+        prefs.edit().putString("base_url", normalizeBaseUrl(baseUrl)).apply();
     }
 
     boolean isOnline() {
@@ -58,7 +70,7 @@ final class ApiClient {
         executor.execute(() -> {
             HttpURLConnection connection = null;
             try {
-                URL url = new URL(baseUrl + path);
+                URL url = new URL(getBaseUrl() + path);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod(method);
                 connection.setConnectTimeout(3500);
@@ -113,5 +125,12 @@ final class ApiClient {
         } catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    private static String normalizeBaseUrl(String value) {
+        String clean = value == null ? "" : value.trim();
+        if (clean.isEmpty()) clean = BuildConfig.API_BASE_URL;
+        if (!clean.startsWith("http://") && !clean.startsWith("https://")) clean = "https://" + clean;
+        return clean.replaceAll("/+$", "");
     }
 }

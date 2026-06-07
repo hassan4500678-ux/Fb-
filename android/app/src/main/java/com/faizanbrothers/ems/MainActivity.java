@@ -91,12 +91,16 @@ public final class MainActivity extends Activity {
         EditText email = input("Email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         email.setText(cache.getString("last_email", "hassanullahkhan989@gmail.com"));
         EditText password = input("Password", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        EditText apiUrl = input("API URL e.g. https://your-domain.com", InputType.TYPE_TEXT_VARIATION_URI);
+        apiUrl.setText(api.getBaseUrl());
         Button login = button("Login", NEON);
         statusLine = text("", 13, GRAY, false);
 
         card.addView(email);
         card.addView(space(10));
         card.addView(password);
+        card.addView(space(10));
+        card.addView(apiUrl);
         card.addView(space(14));
         card.addView(login);
         card.addView(space(10));
@@ -104,7 +108,8 @@ public final class MainActivity extends Activity {
         root.addView(card);
 
         login.setOnClickListener(v -> {
-            statusLine.setText("Signing in...");
+            api.setBaseUrl(apiUrl.getText().toString());
+            statusLine.setText("Signing in via " + api.getBaseUrl());
             login.setEnabled(false);
             api.post("/api/auth/login", SimpleJson.loginPayload(email.getText().toString().trim(), password.getText().toString()), new ApiClient.Callback() {
                 @Override
@@ -127,7 +132,7 @@ public final class MainActivity extends Activity {
                 @Override
                 public void onError(String message, int statusCode) {
                     main.post(() -> {
-                        statusLine.setText(statusCode == 0 ? "Network unavailable. Check API URL." : "Invalid login or inactive account.");
+                        statusLine.setText(statusCode == 0 ? "API not reachable. Start/deploy backend and set correct API URL." : "Invalid login, inactive account, or API error.");
                         login.setEnabled(true);
                     });
                 }
