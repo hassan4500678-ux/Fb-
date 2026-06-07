@@ -58,6 +58,15 @@ The script installs a local Android SDK and Gradle distribution if missing, gene
 - `artifacts/android/faizan-brothers-ems-release.apk`
 - `artifacts/android/faizan-brothers-ems-release.aab`
 
+The login screen also includes an API URL field. Use the public deployed backend URL there if the app was built without `EMS_API_BASE_URL`.
+
+Important physical-device networking notes:
+
+- `localhost` and `127.0.0.1` point to the phone itself, not your server.
+- Use a public HTTPS backend URL for production.
+- HTTP staging/LAN URLs are allowed by Android network security config for testing, but HTTPS is recommended for release distribution.
+- The app checks `/health` before login and then posts to `/api/auth/login`.
+
 For real Play Store distribution, provide a secure upload key instead of the generated fallback:
 
 ```bash

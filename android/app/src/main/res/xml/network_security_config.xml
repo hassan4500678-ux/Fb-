@@ -1,0 +1,9 @@
+<network-security-config>
+    <!-- Enables HTTP staging/LAN API URLs on physical Android devices.
+         Use HTTPS for production deployments and set EMS_API_BASE_URL accordingly. -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

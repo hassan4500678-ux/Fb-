@@ -6,7 +6,7 @@ def keystoreFile = System.getenv("EMS_RELEASE_STORE_FILE") ?: "${rootDir}/build/
 def keystorePassword = System.getenv("EMS_RELEASE_STORE_PASSWORD") ?: "changeit-release"
 def keyAliasValue = System.getenv("EMS_RELEASE_KEY_ALIAS") ?: "faizan-brothers-ems"
 def keyPasswordValue = System.getenv("EMS_RELEASE_KEY_PASSWORD") ?: keystorePassword
-def apiBaseUrl = System.getenv("EMS_API_BASE_URL") ?: "https://api.faizanbrothers.example"
+def apiBaseUrl = System.getenv("EMS_API_BASE_URL") ?: ""
 
 android {
     namespace "com.faizanbrothers.ems"
@@ -51,4 +51,8 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ["-Xlint:deprecation"]
 }

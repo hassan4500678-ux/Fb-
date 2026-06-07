@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -72,20 +73,30 @@ public final class MainActivity extends Activity {
 
     private void showLogin() {
         ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setClipToPadding(false);
         scroll.setBackgroundResource(R.drawable.ems_neon_backdrop);
         LinearLayout root = column();
-        root.setPadding(dp(22), dp(28), dp(22), dp(28));
-        scroll.addView(root);
+        root.setGravity(Gravity.CENTER_HORIZONTAL);
+        root.setPadding(dp(18), safeTop() + dp(18), dp(18), safeBottom() + dp(18));
+        scroll.addView(root, new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView logo = text("Faizan & Brothers EMS", 28, Color.WHITE, true);
+        logo.setGravity(Gravity.CENTER);
         root.addView(logo);
-        root.addView(text("Production Android Employee Management System", 14, GRAY, false));
-        root.addView(space(24));
+        TextView subtitle = text("Production Android Employee Management System", 14, GRAY, false);
+        subtitle.setGravity(Gravity.CENTER);
+        root.addView(subtitle);
+        root.addView(space(18));
 
         LinearLayout card = card();
+        card.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView title = text("Secure Login", 22, Color.WHITE, true);
+        title.setGravity(Gravity.CENTER);
         card.addView(title);
-        card.addView(text("Admin: hassanullahkhan989@gmail.com", 12, GRAY, false));
+        TextView adminHint = text("Admin: hassanullahkhan989@gmail.com", 12, GRAY, false);
+        adminHint.setGravity(Gravity.CENTER);
+        card.addView(adminHint);
         card.addView(space(12));
 
         EditText email = input("Email", InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -95,44 +106,43 @@ public final class MainActivity extends Activity {
         apiUrl.setText(api.getBaseUrl());
         Button login = button("Login", NEON);
         statusLine = text("", 13, GRAY, false);
+        statusLine.setGravity(Gravity.CENTER);
 
         card.addView(email);
         card.addView(space(10));
         card.addView(password);
         card.addView(space(10));
         card.addView(apiUrl);
+        TextView apiHelp = text("Enter a deployed backend URL. Localhost/127.0.0.1 will not work on a physical phone.", 11, GRAY, false);
+        apiHelp.setGravity(Gravity.CENTER);
+        card.addView(space(8));
+        card.addView(apiHelp);
         card.addView(space(14));
-        card.addView(login);
+        card.addView(login, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(52)));
         card.addView(space(10));
         card.addView(statusLine);
+        card.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_up));
         root.addView(card);
 
         login.setOnClickListener(v -> {
             api.setBaseUrl(apiUrl.getText().toString());
-            statusLine.setText("Signing in via " + api.getBaseUrl());
+            if (api.getBaseUrl().isEmpty()) {
+                statusLine.setText("Please enter your deployed backend API URL first.");
+                return;
+            }
+            statusLine.setText("Checking API...");
             login.setEnabled(false);
-            api.post("/api/auth/login", SimpleJson.loginPayload(email.getText().toString().trim(), password.getText().toString()), new ApiClient.Callback() {
+            api.get("/health", new ApiClient.Callback() {
                 @Override
                 public void onSuccess(String body) {
-                    main.post(() -> {
-                        try {
-                            JSONObject json = new JSONObject(body);
-                            JSONObject user = json.optJSONObject("user");
-                            tokenVault.saveToken(json.optString("token"));
-                            if (user != null) rememberUser(user);
-                            cache.edit().putString("last_email", email.getText().toString().trim()).apply();
-                            showShell();
-                        } catch (Exception error) {
-                            statusLine.setText("Login response error");
-                            login.setEnabled(true);
-                        }
-                    });
+                    main.post(() -> statusLine.setText("API online. Signing in..."));
+                    performLogin(email, password, login);
                 }
 
                 @Override
                 public void onError(String message, int statusCode) {
                     main.post(() -> {
-                        statusLine.setText(statusCode == 0 ? "API not reachable. Start/deploy backend and set correct API URL." : "Invalid login, inactive account, or API error.");
+                        statusLine.setText("API not available. Deploy backend and use its HTTPS URL.");
                         login.setEnabled(true);
                     });
                 }
@@ -142,13 +152,42 @@ public final class MainActivity extends Activity {
         setContentView(scroll);
     }
 
+    private void performLogin(EditText email, EditText password, Button login) {
+        api.post("/api/auth/login", SimpleJson.loginPayload(email.getText().toString().trim(), password.getText().toString()), new ApiClient.Callback() {
+            @Override
+            public void onSuccess(String body) {
+                main.post(() -> {
+                    try {
+                        JSONObject json = new JSONObject(body);
+                        JSONObject user = json.optJSONObject("user");
+                        tokenVault.saveToken(json.optString("token"));
+                        if (user != null) rememberUser(user);
+                        cache.edit().putString("last_email", email.getText().toString().trim()).apply();
+                        showShell();
+                    } catch (Exception error) {
+                        statusLine.setText("Login response error. Please check API version.");
+                        login.setEnabled(true);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(String message, int statusCode) {
+                main.post(() -> {
+                    statusLine.setText(statusCode == 0 ? "Network request failed. Check API URL and internet." : "Invalid login, inactive account, or API error.");
+                    login.setEnabled(true);
+                });
+            }
+        });
+    }
+
     private void showShell() {
         LinearLayout root = column();
         root.setBackgroundResource(R.drawable.ems_neon_backdrop);
 
         LinearLayout header = row();
         header.setGravity(Gravity.CENTER_VERTICAL);
-        header.setPadding(dp(16), dp(18), dp(16), dp(10));
+        header.setPadding(dp(16), safeTop() + dp(12), dp(16), dp(10));
         header.addView(avatar(displayName, 52));
         LinearLayout profile = column();
         profile.setPadding(dp(12), 0, 0, 0);
@@ -165,11 +204,13 @@ public final class MainActivity extends Activity {
         root.addView(menuScroll);
 
         ScrollView scroll = new ScrollView(this);
+        scroll.setClipToPadding(false);
         content = column();
-        content.setPadding(dp(16), dp(6), dp(16), dp(30));
+        content.setPadding(dp(16), dp(6), dp(16), safeBottom() + dp(30));
         scroll.addView(content);
         root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
         setContentView(root);
+        content.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
         renderMenu();
         loadMe();
         selectMenu("Dashboard");
@@ -715,6 +756,19 @@ public final class MainActivity extends Activity {
             default:
                 return CYAN;
         }
+    }
+
+    private int safeTop() {
+        return systemDimension("status_bar_height", dp(12));
+    }
+
+    private int safeBottom() {
+        return systemDimension("navigation_bar_height", dp(10));
+    }
+
+    private int systemDimension(String name, int fallback) {
+        int resourceId = getResources().getIdentifier(name, "dimen", "android");
+        return resourceId > 0 ? getResources().getDimensionPixelSize(resourceId) : fallback;
     }
 
     private int dp(int value) {

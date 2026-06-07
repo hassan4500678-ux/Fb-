@@ -70,7 +70,12 @@ final class ApiClient {
         executor.execute(() -> {
             HttpURLConnection connection = null;
             try {
-                URL url = new URL(getBaseUrl() + path);
+                String baseUrl = getBaseUrl();
+                if (baseUrl.isEmpty()) {
+                    callback.onError("API URL is required", 0);
+                    return;
+                }
+                URL url = new URL(baseUrl + path);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod(method);
                 connection.setConnectTimeout(3500);
@@ -129,7 +134,7 @@ final class ApiClient {
 
     private static String normalizeBaseUrl(String value) {
         String clean = value == null ? "" : value.trim();
-        if (clean.isEmpty()) clean = BuildConfig.API_BASE_URL;
+        if (clean.isEmpty()) return "";
         if (!clean.startsWith("http://") && !clean.startsWith("https://")) clean = "https://" + clean;
         return clean.replaceAll("/+$", "");
     }
