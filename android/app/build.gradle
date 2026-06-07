@@ -1,0 +1,58 @@
+plugins {
+    id "com.android.application"
+}
+
+def keystoreFile = System.getenv("EMS_RELEASE_STORE_FILE") ?: "${rootDir}/build/release/faizan-brothers-ems.jks"
+def keystorePassword = System.getenv("EMS_RELEASE_STORE_PASSWORD") ?: "changeit-release"
+def keyAliasValue = System.getenv("EMS_RELEASE_KEY_ALIAS") ?: "faizan-brothers-ems"
+def keyPasswordValue = System.getenv("EMS_RELEASE_KEY_PASSWORD") ?: keystorePassword
+def apiBaseUrl = System.getenv("EMS_API_BASE_URL") ?: ""
+
+android {
+    namespace "com.faizanbrothers.ems"
+    compileSdk 35
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    defaultConfig {
+        applicationId "com.faizanbrothers.ems"
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0"
+        buildConfigField "String", "API_BASE_URL", "\"${apiBaseUrl}\""
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreFile)
+            storePassword keystorePassword
+            keyAlias keyAliasValue
+            keyPassword keyPasswordValue
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += ["-Xlint:deprecation"]
+}

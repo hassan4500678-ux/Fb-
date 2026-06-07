@@ -1,0 +1,12 @@
+<resources>
+    <color name="background">#050B1F</color>
+    <color name="secondary">#08142E</color>
+    <color name="card">#0B1736</color>
+    <color name="primary_neon_blue">#00C2FF</color>
+    <color name="cyan_glow">#00E5FF</color>
+    <color name="purple">#7B61FF</color>
+    <color name="green">#00D26A</color>
+    <color name="orange">#FFB020</color>
+    <color name="white_text">#FFFFFF</color>
+    <color name="gray_text">#A7B0C0</color>
+</resources>

@@ -1,0 +1,53 @@
+plugins {
+    id "com.android.application"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreFile = System.getenv("EMS_RELEASE_STORE_FILE")
+def hasReleaseSigning = keystoreFile != null && !keystoreFile.trim().isEmpty()
+def apiBaseUrl = System.getenv("EMS_API_BASE_URL") ?: ""
+
+android {
+    namespace "com.faizanbrothers.ems_flutter"
+    compileSdk flutter.compileSdkVersion
+
+    defaultConfig {
+        applicationId "com.faizanbrothers.ems"
+        minSdk 23
+        targetSdk flutter.targetSdkVersion
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+        manifestPlaceholders = [appName: "Faizan & Brothers EMS"]
+        buildConfigField "String", "DEFAULT_API_BASE_URL", "\"${apiBaseUrl}\""
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    signingConfigs {
+        release {
+            if (hasReleaseSigning) {
+                storeFile file(keystoreFile)
+                storePassword System.getenv("EMS_RELEASE_STORE_PASSWORD")
+                keyAlias System.getenv("EMS_RELEASE_KEY_ALIAS")
+                keyPassword System.getenv("EMS_RELEASE_KEY_PASSWORD") ?: System.getenv("EMS_RELEASE_STORE_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+flutter {
+    source "../.."
+}
