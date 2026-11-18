@@ -1,0 +1,886 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#07140F"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style><script src="app-shim.js"></script></head><body><title>Babar Azam Stats Book</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,700;1,6..96,500&family=Outfit:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a members'-club stats book — dark bottle-green ground, gold leaf rules, one hero, tabbed ledgers below. Single deliberate dark look. */
+:root{
+  --ground:#07140F; --panel:#0D2219; --panel-2:#123024; --line:#24473A;
+  --gold:#D4B062; --gold-soft:#8E7A45; --ivory:#F2EBDA; --mute:#9DB0A6;
+  --good:#6FCF97; --bad:#E58B7B; --even:#C9C2A8;
+  --display:"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body:"Outfit", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--ground);color:var(--ivory)}
+body{font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:radial-gradient(1200px 500px at 85% -10%, #1B3F30 0%, transparent 60%),
+    repeating-linear-gradient(90deg, rgba(212,176,98,.025) 0 1px, transparent 1px 64px);}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ground)}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:32px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--gold-soft)}
+.hero h1{font-size:clamp(46px,9vw,104px);line-height:.9;letter-spacing:-.01em;color:var(--ivory)}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .meta{margin-top:14px;color:var(--mute);display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px}
+.hero .meta b{color:var(--gold);font-weight:500}
+.photo{position:relative;aspect-ratio:4/5;max-width:100%;border:1px solid var(--gold);border-radius:130px 130px 6px 6px;overflow:hidden;
+  background:linear-gradient(160deg,#16402F,#0A1B14)}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}
+.photo .ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:var(--gold-soft)}
+.photo .ph .jersey{font-family:var(--display);font-size:120px;line-height:1;color:rgba(212,176,98,.18)}
+.photo .up{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);white-space:nowrap}
+.career{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin-top:24px;border:1px solid var(--line);border-radius:4px;background:rgba(13,34,25,.7)}
+.career>div{padding:14px 16px;border-right:1px solid var(--line);min-width:0}
+.career>div:last-child{border-right:0}
+.career .v{font-family:var(--display);font-size:clamp(20px,2.6vw,30px);color:var(--ivory);line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.career .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+
+/* tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:linear-gradient(var(--ground) 80%,transparent);
+  display:flex;gap:4px;overflow-x:auto;padding-block:14px 12px;margin-top:8px;scrollbar-width:none}
+nav.tabs button{background:none;border:1px solid transparent;color:var(--mute);padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;font-size:14px}
+nav.tabs button:hover{color:var(--ivory)}
+nav.tabs button[aria-selected="true"]{border-color:var(--gold);color:var(--gold);background:rgba(212,176,98,.07)}
+
+section.view{padding-top:12px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:18px 0 14px}
+.sec-head h2{font-size:clamp(26px,4vw,38px)}
+.sec-head p{margin:4px 0 0;color:var(--mute);max-width:62ch}
+
+/* controls */
+.btn{border:1px solid var(--gold);background:var(--gold);color:#13241B;padding:9px 16px;border-radius:3px;cursor:pointer;font-weight:600;font-size:14px}
+.btn.ghost{background:transparent;color:var(--gold)}
+.btn.small{padding:5px 10px;font-size:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.field input,.field select{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:9px 10px;min-width:0;width:100%}
+.field input:focus,.field select:focus{border-color:var(--gold);outline:none}
+.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:16px;border:1px solid var(--line);background:var(--panel);border-radius:4px}
+
+/* report */
+.report-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:24px;margin-top:20px;align-items:start}
+.pcard{position:relative;border:1px solid var(--gold);border-radius:6px;overflow:hidden;
+  background:linear-gradient(155deg,#16412F 0%,#0B1E16 55%,#081510 100%)}
+.pcard::after{content:"";position:absolute;inset:8px;border:1px solid rgba(212,176,98,.35);border-radius:3px;pointer-events:none}
+.pcard .top{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;padding:26px 26px 18px;align-items:center}
+.pcard .mini{aspect-ratio:4/5;border-radius:60px 60px 4px 4px;overflow:hidden;border:1px solid var(--gold-soft);background:#0A1B14;display:grid;place-items:center;font-family:var(--display);font-size:46px;color:rgba(212,176,98,.3)}
+.pcard .mini img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.pcard h3{font-size:34px;line-height:1}
+.pcard .sel{margin-top:8px;color:var(--gold);font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.pcard .big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid rgba(212,176,98,.3);border-bottom:1px solid rgba(212,176,98,.3);margin:0 26px}
+.pcard .big>div{padding:16px 6px;text-align:center;min-width:0}
+.pcard .big>div+div{border-left:1px solid rgba(212,176,98,.18)}
+.pcard .big .v{font-family:var(--display);font-size:clamp(24px,3.2vw,40px);line-height:1.1;white-space:nowrap}
+.pcard .big .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+.pcard .small{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:16px 26px 26px}
+.pcard .small div{font-size:12px;color:var(--mute)}
+.pcard .small b{display:block;font-family:var(--mono);font-weight:500;color:var(--ivory);font-size:16px}
+.pcard .tons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 26px 26px;padding-top:14px;border-top:1px solid rgba(212,176,98,.3)}
+.pcard .tons div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pcard .tons .k{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.pcard .tons b{font-family:var(--display);font-weight:500;font-size:30px;color:var(--gold);line-height:1.1}
+.pcard .tons .who{font-size:12px;color:var(--mute);overflow-wrap:anywhere}
+@media (max-width:520px){.pcard .tons{margin-inline:18px}}
+.card-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.hint{font-size:12px;color:var(--mute)}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:500;text-align:right;padding:11px 12px;border-bottom:1px solid var(--gold-soft);white-space:nowrap;background:var(--panel-2)}
+th:first-child,td:first-child{text-align:left}
+td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td:first-child{font-family:var(--body);font-weight:500}
+tbody tr:hover td{background:rgba(212,176,98,.04)}
+tr.total td{background:rgba(212,176,98,.10);color:var(--gold);font-weight:600;border-bottom:0}
+td .bar{display:inline-block;height:3px;background:var(--gold);vertical-align:middle;margin-right:8px;opacity:.8;border-radius:2px}
+td.zero{color:#4E665B}
+.tables{display:grid;gap:28px}
+.tbl-title{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;gap:12px;flex-wrap:wrap}
+.tbl-title h3{font-size:22px}
+.tbl-title span{font-size:12px;color:var(--mute)}
+.tbl-title{align-items:end}
+.chip:disabled{opacity:.4;cursor:not-allowed}
+.btn.small:disabled{opacity:.4}
+
+/* bowlers */
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--mute);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:13px}
+.chip[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:16px}
+.bcard{border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:16px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:12px;width:100%}
+.bcard:hover{border-color:var(--gold-soft)}
+.bcard .who{display:flex;justify-content:space-between;align-items:start;gap:8px}
+.bcard .who h4{margin:0;font-family:var(--display);font-size:20px;font-weight:500}
+.bcard .who small{color:var(--mute);font-size:12px;display:block}
+.pill{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.abadge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;color:#13241B;background:var(--gold);border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:middle;letter-spacing:.06em}
+.split th.grp{text-align:center;border-bottom:1px solid var(--line);color:var(--ivory);font-family:var(--display);font-size:13px;letter-spacing:.02em;text-transform:none}
+.split td.sep,.split th.sep{border-left:1px solid var(--gold-soft)}
+table.sticky td:first-child,table.sticky th:first-child{position:sticky;left:0;z-index:1;background:var(--panel)}
+table.sticky th:first-child{background:var(--panel-2)}
+table.sticky tr.total td:first-child{background:#2A3A26}
+#v-grounds table:not(.grid) td:first-child{white-space:normal;min-width:120px;max-width:170px;line-height:1.25}
+#v-grounds td .gname{display:block;font-weight:500}
+#v-grounds td .gcity{display:block;font-size:11px;color:var(--mute);font-weight:400}
+.ateam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-top:16px}
+.ateam-card{border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:16px;min-width:0}
+.ateam-card h4{margin:0;font-family:var(--display);font-weight:500;font-size:22px}
+.ateam-card .sub{color:var(--mute);font-size:12px;margin-top:2px}
+.ateam-card table{font-size:13px}
+.ateam-card td,.ateam-card th{padding:7px 8px}
+.ateam-card tbody tr{cursor:pointer}
+.mini-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.mini-strip div{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.mini-strip b{display:block;font-family:var(--mono);font-size:18px;font-weight:500;color:var(--ivory);letter-spacing:0}
+@media (max-width:520px){.ateam-grid{grid-template-columns:minmax(0,1fr)}}
+.pill.good{color:var(--good)} .pill.bad{color:var(--bad)} .pill.even{color:var(--even)} .pill.none{color:#5E7469}
+.bstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.bstats div{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.bstats b{display:block;font-family:var(--mono);font-size:17px;font-weight:500;color:var(--ivory);letter-spacing:0}
+.team-head{margin:26px 0 0;display:flex;align-items:baseline;gap:12px}
+.team-head h3{font-size:24px}
+.team-head span{color:var(--mute);font-size:13px}
+
+/* sheet / editor */
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(3,10,7,.72);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet .box{width:min(640px,100%);max-height:100%;overflow:auto;background:var(--panel);border:1px solid var(--gold);border-radius:6px;padding:22px}
+.sheet h3{font-size:26px}
+.fgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.fgrid .span2{grid-column:span 2}
+.fmt-block{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+.fmt-block h4{margin:0;color:var(--gold);font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.row-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+/* editable grid */
+table.grid td{padding:0;border-right:1px solid var(--line)}
+table.grid td:last-child{border-right:0}
+table.grid td.ro{padding:8px 10px;color:var(--mute)}
+table.grid input,table.grid select{width:100%;min-width:64px;background:transparent;border:1px solid transparent;padding:9px 8px;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--ivory);border-radius:0}
+table.grid select,table.grid input.txt{text-align:left;font-family:var(--body)}
+table.grid input.wide{min-width:190px} table.grid select{min-width:110px} table.grid input[type=date]{min-width:130px}
+table.grid input:hover,table.grid select:hover{background:rgba(212,176,98,.05)}
+table.grid input:focus,table.grid select:focus{outline:none;border-color:var(--gold);background:var(--panel-2)}
+table.grid select option{background:var(--panel)}
+table.grid tr.saved td{animation:flash 1s ease}
+@keyframes flash{from{background:rgba(111,207,151,.18)}to{background:transparent}}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+/* log */
+.log-form{border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:16px}
+.log-form .fgrid{grid-template-columns:repeat(6,minmax(0,1fr));margin-top:0}
+.ex{color:var(--gold-soft);font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px dashed var(--gold-soft);padding:1px 6px;border-radius:3px;margin-left:6px}
+.notice{border:1px dashed var(--gold-soft);border-radius:4px;padding:12px 14px;color:var(--mute);display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.empty{padding:28px;text-align:center;color:var(--mute);border:1px dashed var(--line);border-radius:4px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:#13241B;padding:10px 16px;border-radius:3px;font-weight:600;z-index:30;max-width:calc(100% - 32px)}
+.linkbtn{background:none;border:0;color:var(--gold);cursor:pointer;padding:2px 4px;font-size:13px}
+.linkbtn.del{color:var(--bad)}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:minmax(0,1fr) 150px;gap:16px}
+  .career{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .career>div:nth-child(3){border-right:0}
+  .career>div:nth-child(-n+3){border-bottom:1px solid var(--line)}
+  .report-grid{grid-template-columns:minmax(0,1fr)}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .log-form .fgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .career{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .career>div{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}
+  .career>div:nth-child(2n){border-right:0!important}
+  .career>div:nth-last-child(-n+2){border-bottom:0!important}
+  .career .v{font-size:24px}
+  .pcard .big{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pcard .big>div{border-left:0!important}
+  .pcard .big>div:nth-child(odd){border-right:1px solid rgba(212,176,98,.18)}
+  .pcard .big>div:nth-child(-n+2){border-bottom:1px solid rgba(212,176,98,.18)}
+  .pcard .big .v{font-size:30px}
+  .hero{grid-template-columns:minmax(0,1fr) 110px}
+  .photo .up{font-size:11px;padding:4px 8px}
+  .photo .ph .jersey{font-size:60px}
+  .pcard .top{grid-template-columns:80px minmax(0,1fr);padding:20px 18px 14px}
+  .pcard .big,.pcard .small{margin-inline:18px}
+  .pcard .small{padding-inline:0;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pcard h3{font-size:26px}
+  .fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .log-form .fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pcard{transition:transform .3s ease}
+  .bcard{transition:border-color .2s ease, transform .2s ease}
+  .bcard:hover{transform:translateY(-2px)}
+}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="eyebrow">Pakistan · Right-hand bat · Shirt 56</div>
+      <h1>Babar <em>Azam</em></h1>
+      <div class="meta"><span>International career ledger</span><span><b>ODI</b> · <b>T20I</b> · <b>Test</b></span><span id="lastUpd">Figures from ESPNcricinfo, 22 Oct 2026</span></div>
+    </div>
+    <div class="photo" id="photo">
+      <div class="ph" id="photoPh"><div><div class="jersey">56</div><div class="hint">Add his photo</div></div></div>
+      <img id="photoImg" alt="Babar Azam" hidden>
+      <button class="btn small up" id="photoBtn" type="button">Upload photo</button>
+      <input type="file" id="photoFile" accept="image/*" hidden>
+    </div>
+  </header>
+
+  <div class="career" id="career"></div>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" data-v="report">Report</button>
+    <button role="tab" data-v="odi">ODI</button>
+    <button role="tab" data-v="t20">T20I</button>
+    <button role="tab" data-v="test">Test</button>
+    <button role="tab" data-v="all">All formats</button>
+    <button role="tab" data-v="grounds">Grounds</button>
+    <button role="tab" data-v="ateams">vs A-teams</button>
+    <button role="tab" data-v="bowlers">vs Bowlers</button>
+    <button role="tab" data-v="hundreds">Centuries</button>
+  </nav>
+
+  <section class="view" id="v-report">
+    <div class="sec-head"><div><h2>Stats report</h2><p>Pick a format, then who he played or where he played. The card updates straight away and can be saved as an image.</p></div></div>
+    <div class="filters" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+      <div class="field"><label for="fFmt">Format</label><select id="fFmt"><option value="ALL">All formats</option><option value="ODI">ODI</option><option value="T20">T20I</option><option value="Test">Test</option></select></div>
+      <div class="field"><label for="fSplit">Show</label><select id="fSplit"></select></div>
+    </div>
+    <div class="report-grid">
+      <div>
+        <div class="pcard" id="pcard"></div>
+        <div class="card-actions"><button class="btn" id="saveCard" type="button">Save card as image</button><span class="hint" id="cardHint"></span></div>
+      </div>
+      <div>
+        <div class="tbl-title"><h3>Full numbers</h3><span id="selLabel"></span></div>
+        <div class="tbl-wrap"><table id="repTable"></table></div>
+        <p class="hint" id="repNote" style="margin-top:10px"></p>
+      </div>
+    </div>
+    <div class="tbl-title" style="margin-top:32px"><h3>Centuries in this selection</h3><span id="cenCount"></span></div>
+    <div class="tbl-wrap"><table id="cenTable"></table></div>
+  </section>
+
+  <section class="view" id="v-odi" hidden></section>
+  <section class="view" id="v-t20" hidden></section>
+  <section class="view" id="v-test" hidden></section>
+  <section class="view" id="v-all" hidden></section>
+
+  <section class="view" id="v-grounds" hidden></section>
+  <section class="view" id="v-ateams" hidden></section>
+
+  <section class="view" id="v-bowlers" hidden>
+    <div class="sec-head">
+      <div><h2>Babar vs bowlers</h2><p>Head-to-head record against the bowlers who matter. Use Table to edit many at once, or tap a card to edit one bowler.</p><p class="hint" style="margin-top:6px">Starting figures come from Cricsheet ball-by-ball data via crictables.com, collected 22 Oct 2026. The T20 column there counts every T20 match, including leagues such as the PSL and BBL, so check T20I numbers and correct them where needed. Innings were not available, so that column starts blank.</p></div>
+      <button class="btn ghost" id="addBowler" type="button">Add bowler</button>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center">
+      <div class="chips" id="teamChips"></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><div class="chips" id="bFmtChips"></div><div class="chips" id="bModeChips"></div></div>
+    </div>
+    <div id="bowlerList"></div>
+  </section>
+
+  <section class="view" id="v-hundreds" hidden>
+    <div class="sec-head"><div><h2>Centuries</h2><p>Every international hundred with its ground. Press Edit to add or change rows, then Save.</p></div></div>
+    <div id="hundredsBox"></div>
+  </section>
+</div>
+
+<div class="sheet" id="sheet" hidden><div class="box" id="sheetBox"></div></div>
+<div class="toast" id="toast" hidden></div>
+<canvas id="cardCanvas" width="1080" height="1350" hidden></canvas>
+
+<script>
+(function(){
+const FMTS=["ODI","T20","Test"];
+const FMTNAME={ODI:"ODI",T20:"T20I",Test:"Test",ALL:"All formats"};
+const FMTLONG={ODI:"One Day Internationals",T20:"T20 Internationals",Test:"Test cricket"};
+const SENA=["Australia","England","South Africa","New Zealand"], ASIA=["West Indies","India","Sri Lanka","Bangladesh"];
+const BTEAMS=["Australia","England","South Africa","New Zealand","India","West Indies","Sri Lanka","Bangladesh"];
+const ATEAMS=BTEAMS;
+let aFmt="ALL",adj={};
+function aCounts(t,f){const team=total(agg.filter(r=>fmtsFor(f).includes(r.fmt)&&r.kind==="team"&&r.name===t));const d=(adj[slug(t)]||{})[f]||{};
+  return {b100:team.h100,b50:team.h50,h100:Math.max(0,team.h100+n(d.h100)),h50:Math.max(0,team.h50+n(d.h50)),changed:!!(n(d.h100)||n(d.h50))}}
+const KINDS={team:{title:"Against each team",first:"Opponent",add:"Add team"},host:{title:"In each host country",first:"Played in",add:"Add country"},venue:{title:"Home, away and neutral",first:"Venue",add:"Add row"}};
+const F_NUM=["mat","inns","no","runs","bf","h100","h50","f4","f6"];
+const COLS=[["mat","Mat"],["inns","Inns"],["no","NO"],["runs","Runs"],["hs","HS"],["avg","Ave"],["bf","BF"],["sr","SR"],["h100","100"],["h50","50"],["f4","4s"],["f6","6s"]];
+
+let db=null, assets=null, downloads=null, canWrite=true, loaded=false;
+let agg=[], bowlers=[], hundreds=[], photoUrl=null;
+let edit=null; // {key, draft:[...]}
+let bTeam="All", bFmt="All", bMode="cards";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const n=v=>{const x=Number(v);return v!==""&&v!==null&&isFinite(x)?x:0};
+const fmtN=v=>Number(v).toLocaleString("en-US");
+const fx=(v,d=2)=>v===null||v===undefined?"–":v.toFixed(d);
+const slug=s=>String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,2800)}
+const region=h=>h==="Pakistan"?"Home":SENA.includes(h)?"SENA":ASIA.includes(h)?"Asia":"Others";
+const writable=()=>!!db&&canWrite;
+
+/* ---------- maths ---------- */
+function hsVal(h){const m=String(h||"").match(/\d+/);return m?Number(m[0]):null}
+function total(rows){
+  const a={mat:0,inns:0,no:0,runs:0,bf:0,h100:0,h50:0,f4:0,f6:0,hs:"",bfKnown:true,extraKnown:true,innsKnown:true,outs:0};
+  let best=-1;
+  for(const r of rows){
+    for(const k of F_NUM)a[k]+=n(r[k]);
+    const hasO=r.outs!==undefined&&r.outs!==null&&r.outs!=="";a.outs+=hasO?n(r.outs):n(r.inns)-n(r.no);
+    if(n(r.mat)>0&&(r.inns===null||r.inns===undefined||r.inns===""))a.innsKnown=false;
+    if(n(r.mat)>0&&n(r.runs)>0&&(r.bf===null||r.bf===undefined||r.bf===""))a.bfKnown=false;
+    if(n(r.mat)>0&&(r.h100===null||r.h100===undefined||r.h100===""))a.extraKnown=false;
+    const v=hsVal(r.hs);if(v!==null&&(v>best||(v===best&&String(r.hs).includes("*")))){best=v;a.hs=String(r.hs)}
+  }
+  const outs=a.outs;a.avg=outs>0?a.runs/outs:null;a.sr=a.bfKnown&&a.bf>0?a.runs/a.bf*100:null;return a;
+}
+const rowsOf=(fmt,kind)=>agg.filter(r=>r.fmt===fmt&&r.kind===kind).sort((x,y)=>n(x.order)-n(y.order)||String(x.name).localeCompare(y.name));
+const fmtsFor=f=>f==="ALL"?FMTS:[f];
+function cell(a,k){
+  if(k==="avg")return fx(a.avg);
+  if(k==="sr")return fx(a.sr);
+  if(k==="hs")return a.hs||"–";
+  if((k==="inns"||k==="no")&&a.innsKnown===false)return "–";
+  if((k==="f4"||k==="f6")&&a.noBoundaries)return "–";
+  if(k==="bf")return a.bfKnown===false?"–":fmtN(a.bf);
+  if(["h100","h50","f4","f6"].includes(k)&&a.extraKnown===false)return "–";
+  return k==="runs"?fmtN(a[k]):a[k];
+}
+
+/* ---------- tabs ---------- */
+const VIEWS=["report","odi","t20","test","all","grounds","ateams","bowlers","hundreds"];
+function show(v){if(!VIEWS.includes(v))v="report";
+  document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));
+  VIEWS.forEach(x=>$("v-"+x).hidden=x!==v);
+  try{history.replaceState(null,"","#"+v)}catch(e){}
+}
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)show(b.dataset.v)});
+
+/* ---------- guarded rendering while typing ---------- */
+const pending={};
+function guarded(id,fn){const el=$(id);if(el&&el.contains(document.activeElement)&&document.activeElement.matches("input,select")){pending[id]=fn;return}fn()}
+document.addEventListener("focusout",()=>setTimeout(()=>{for(const id in pending){const el=$(id);if(!el||!el.contains(document.activeElement)){const f=pending[id];delete pending[id];f()}}},0));
+
+/* ---------- career strip ---------- */
+function renderCareer(){
+  const a=total(agg.filter(r=>r.kind==="team"));
+  const cells=[["Matches",fmtN(a.mat)],["Runs",fmtN(a.runs)],["Average",fx(a.avg)],["Hundreds",a.h100],["Fifties",a.h50],["Highest",a.hs||"–"]];
+  $("career").innerHTML=cells.map(([k,v])=>`<div><div class="v num">${v}</div><div class="k">${k}</div></div>`).join("");
+}
+
+/* ---------- edit bar ---------- */
+function editBar(key,addLabel){
+  if(!writable())return `<span class="hint">${db?"View only":"Sign in to edit"}</span>`;
+  if(edit&&edit.key===key)return `${addLabel?`<button class="btn ghost small" type="button" data-act="add" data-key="${key}">+ ${addLabel}</button>`:""}<button class="btn ghost small" type="button" data-act="cancel" data-key="${key}">Cancel</button><button class="btn small" type="button" data-act="save" data-key="${key}">Save</button>`;
+  return `<button class="btn ghost small" type="button" data-act="edit" data-key="${key}" ${edit?"disabled":""}>Edit</button>`;
+}
+
+/* ---------- aggregate tables ---------- */
+function aggTableHtml(fmt,kind){
+  const key=`${fmt}|${kind}`,K=KINDS[kind],isEdit=edit&&edit.key===key;
+  const rows=rowsOf(fmt,kind),tot=total(rows);
+  let h=`<div class="tbl-block" id="tb-${fmt}-${kind}"><div class="tbl-title"><div><h3>${K.title}</h3></div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${editBar(key,K.add)}</div></div><div class="tbl-wrap">`;
+  if(isEdit){
+    h+=`<table class="grid"><thead><tr><th style="text-align:left">${K.first}</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}<th></th></tr></thead><tbody>`;
+    edit.draft.forEach((r,i)=>{if(r._del)return;const a=total([r]);
+      h+=`<tr data-i="${i}"><td><input class="txt" data-f="name" value="${esc(r.name)}" style="min-width:140px" aria-label="Name"></td>`+
+      COLS.map(([k,l])=>k==="avg"||k==="sr"?`<td class="ro num" data-ro="${k}">${k==="avg"?fx(a.avg):fx(a.sr)}</td>`:
+        `<td><input ${k==="hs"?'class="txt" style="min-width:68px;text-align:right"':'type="number" min="0" inputmode="numeric" style="min-width:58px"'} data-f="${k}" value="${esc(r[k]??"")}" aria-label="${l}"></td>`).join("")+
+      `<td class="ro"><button class="linkbtn del" type="button" data-act="delrow" data-key="${key}" data-i="${i}">Remove</button></td></tr>`});
+    h+=`</tbody></table>`;
+  }else{
+    h+=`<table><thead><tr><th>${K.first}</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}</tr></thead><tbody>`;
+    const maxR=Math.max(1,...rows.map(r=>n(r.runs)));
+    h+=rows.map(r=>{const a=total([r]);const w=Math.round(n(r.runs)/maxR*40);
+      return `<tr><td>${esc(r.name)}</td>`+COLS.map(([k])=>{const v=cell(a,k);return `<td class="${n(r.mat)===0?"zero":""}">${k==="runs"&&w>0?`<span class="bar" style="width:${w}px"></span>`:""}${v}</td>`}).join("")+"</tr>"}).join("");
+    h+=`<tr class="total"><td>Total</td>${COLS.map(([k])=>`<td>${cell(tot,k)}</td>`).join("")}</tr></tbody></table>`;
+    if(!rows.length)h=h.replace("</tbody>",`<tr><td colspan="13" style="text-align:center;color:var(--mute);font-family:var(--body);padding:20px">No rows yet. Press Edit, then add one.</td></tr></tbody>`);
+  }
+  return h+"</div></div>";
+}
+function regionTableHtml(fmts){
+  const hostRows=agg.filter(r=>fmts.includes(r.fmt)&&r.kind==="host");
+  const regs=[["Home · Pakistan","Home"],["SENA · Aus, Eng, SA, NZ","SENA"],["Asia · WI, Ind, SL, Ban","Asia"],["Others · UAE, neutral etc.","Others"]];
+  let h=`<div class="tbl-block"><div class="tbl-title"><div><h3>Home vs SENA vs Asia</h3></div><span>Worked out from the host-country table</span></div><div class="tbl-wrap"><table><thead><tr><th>Where</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}</tr></thead><tbody>`;
+  for(const [l,k] of regs){const a=total(hostRows.filter(r=>region(r.name)===k));h+=`<tr><td>${l}</td>${COLS.map(([c])=>`<td>${cell(a,c)}</td>`).join("")}</tr>`}
+  const t=total(hostRows);
+  return h+`<tr class="total"><td>Total</td>${COLS.map(([c])=>`<td>${cell(t,c)}</td>`).join("")}</tr></tbody></table></div></div>`;
+}
+function summaryStrip(a){
+  return `<div class="career" style="margin-top:0">${[["Matches",fmtN(a.mat)],["Runs",fmtN(a.runs)],["Average",fx(a.avg)],["Strike rate",fx(a.sr)],["100s / 50s",a.h100+" / "+a.h50],["Highest",a.hs||"–"]].map(([k,v])=>`<div><div class="v num">${v}</div><div class="k">${k}</div></div>`).join("")}</div>`;
+}
+function renderFormat(fmt){
+  const id="v-"+fmt.toLowerCase();
+  guarded(id,()=>{
+    const team=rowsOf(fmt,"team");
+    $(id).innerHTML=`<div class="sec-head"><div><h2>${FMTNAME[fmt]} record</h2><p>${FMTLONG[fmt]}. Press Edit on any table to change the numbers, then Save. Average and strike rate work themselves out.</p></div></div>
+    ${summaryStrip(total(team))}<div class="tables" style="margin-top:24px">${aggTableHtml(fmt,"team")}${regionTableHtml([fmt])}${aggTableHtml(fmt,"host")}${aggTableHtml(fmt,"venue")}</div>`;
+  });
+}
+function renderAllFormats(){
+  const teams=[...new Set(agg.filter(r=>r.kind==="team").map(r=>r.name))].sort();
+  const hosts=[...new Set(agg.filter(r=>r.kind==="host").map(r=>r.name))].sort();
+  const tbl=(title,first,names,kind)=>{
+    const list=names.map(nm=>[nm,total(agg.filter(r=>r.kind===kind&&r.name===nm))]).sort((x,y)=>y[1].runs-x[1].runs);
+    const maxR=Math.max(1,...list.map(x=>x[1].runs));const t=total(agg.filter(r=>r.kind===kind));
+    return `<div class="tbl-block"><div class="tbl-title"><div><h3>${title}</h3></div><span>ODI + T20I + Test added together</span></div><div class="tbl-wrap"><table><thead><tr><th>${first}</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}</tr></thead><tbody>`+
+      list.map(([nm,a])=>`<tr><td>${esc(nm)}</td>${COLS.map(([k])=>`<td>${k==="runs"?`<span class="bar" style="width:${Math.round(a.runs/maxR*40)}px"></span>`:""}${cell(a,k)}</td>`).join("")}</tr>`).join("")+
+      `<tr class="total"><td>Total</td>${COLS.map(([k])=>`<td>${cell(t,k)}</td>`).join("")}</tr></tbody></table></div></div>`;
+  };
+  const fmtRows=FMTS.map(f=>[FMTNAME[f],total(rowsOf(f,"team"))]);const all=total(agg.filter(r=>r.kind==="team"));
+  const fs=`<div class="tbl-block"><div class="tbl-title"><div><h3>Format by format</h3></div><span>Grand total of all three</span></div><div class="tbl-wrap"><table><thead><tr><th>Format</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}</tr></thead><tbody>`+
+    fmtRows.map(([l,a])=>`<tr><td>${l}</td>${COLS.map(([k])=>`<td>${cell(a,k)}</td>`).join("")}</tr>`).join("")+`<tr class="total"><td>Grand total</td>${COLS.map(([k])=>`<td>${cell(all,k)}</td>`).join("")}</tr></tbody></table></div></div>`;
+  $("v-all").innerHTML=`<div class="sec-head"><div><h2>All formats</h2><p>Everything here adds up the ODI, T20I and Test tabs. To change a number, edit it in its own format tab.</p></div></div>${summaryStrip(all)}<div class="tables" style="margin-top:24px">${fs}${tbl("Against each team","Opponent",teams,"team")}${regionTableHtml(FMTS)}${tbl("In each host country","Played in",hosts,"host")}</div>`;
+}
+
+/* ---------- edit actions ---------- */
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const act=b.dataset.act,key=b.dataset.key;
+  if(act==="edit"){startEdit(key);return}
+  if(act==="cancel"){edit=null;renderAll();return}
+  if(act==="add"){addDraftRow(key);rerenderKey(key);setTimeout(()=>{const el=document.querySelector(`#${blockId(key)} tbody tr:last-child input, #${blockId(key)} tbody tr:last-child select`);if(el){el.focus();el.scrollIntoView({block:"center"})}},30);return}
+  if(act==="delrow"){edit.draft[Number(b.dataset.i)]._del=true;rerenderKey(key);return}
+  if(act==="save"){await saveEdit(key);return}
+});
+const blockId=key=>{const [a,b]=key.split("|");return a==="grounds"?"v-grounds":a==="ateams"?"v-ateams":a==="hundreds"?"hundredsBox":a==="bowlers"?"bowlerList":`tb-${a}-${b}`};
+function startEdit(key){
+  const [a,b]=key.split("|");let src;
+  if(a==="hundreds")src=sortedHundreds();
+  else if(a==="grounds")src=sortGrounds(groundRows(b)).map(r=>{const d=r.docs.find(x=>!x.virtual)||{};return {uc:r.docs.filter(x=>x.virtual).length,id:d.id,name:r.name,country:r.country,mat:d.mat??"",inns:d.inns??"",outs:d.outs??"",runs:d.runs??"",hs:d.hs??"",bf:d.bf??"",h50:d.h50??"",order:d.order??0,src:d.src||"",h100:r.a.h100}});
+  else if(a==="ateams")src=ATEAMS.map(t=>{const v=aCounts(t,b);return {team:t,h100:v.h100,h50:v.h50,b100:v.b100,b50:v.b50}});
+  else if(a==="bowlers")src=bowlerRowsForTable().map(x=>({id:x.id,name:x.name,team:x.team,aTeam:!!x.aTeam,order:x.order,stats:x.stats,...((x.stats||{})[b]||{})}));
+  else src=rowsOf(a,b);
+  edit={key,draft:JSON.parse(JSON.stringify(src)),orig:JSON.stringify(src)};renderAll();
+}
+function addDraftRow(key){
+  const [a,b]=key.split("|");
+  if(a==="grounds"){edit.draft.push({name:"",country:"",mat:"",inns:"",outs:"",runs:"",hs:"",bf:"",h50:"",order:999,h100:0});return}
+  if(a==="hundreds")edit.draft.push({fmt:"ODI",runs:"",notOut:false,balls:"",f4:"",f6:"",opp:"",host:"",venue:"Home",ground:"",date:""});
+  else edit.draft.push({fmt:a,kind:b,name:"",mat:"",inns:"",no:"",runs:"",hs:"",bf:"",h100:"",h50:"",f4:"",f6:"",order:Math.max(0,...edit.draft.map(r=>n(r.order)))+1});
+}
+function rerenderKey(key){
+  const [a]=key.split("|");
+  if(a==="grounds")renderGrounds();else if(a==="ateams")renderAteams();else if(a==="hundreds")renderHundreds();else if(a==="bowlers")renderBowlers();else renderFormat(a);
+}
+document.addEventListener("input",e=>{
+  if(!edit)return;const el=e.target.closest("[data-f]");if(!el)return;const tr=el.closest("tr[data-i]");if(!tr)return;
+  const r=edit.draft[Number(tr.dataset.i)];if(!r)return;
+  r[el.dataset.f]=el.type==="checkbox"?el.checked:el.value;
+  if(edit.key.includes("|")&&!edit.key.startsWith("bowlers")){const a=total([r]);const av=tr.querySelector('[data-ro="avg"]'),sr=tr.querySelector('[data-ro="sr"]');if(av)av.textContent=fx(a.avg);if(sr)sr.textContent=fx(a.sr)}
+});
+document.addEventListener("change",e=>{if(!edit)return;const el=e.target.closest("select[data-f],input[type=checkbox][data-f]");if(!el)return;const tr=el.closest("tr[data-i]");if(!tr)return;const r=edit.draft[Number(tr.dataset.i)];if(r)r[el.dataset.f]=el.type==="checkbox"?el.checked:el.value});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&edit&&e.target.matches("tr[data-i] input"))e.preventDefault()});
+
+function numOrNull(v){return v===""||v===null||v===undefined?null:n(v)}
+async function saveEdit(key){
+  if(!writable())return toast("Saving needs you signed in to claude.ai");
+  const [a,b]=key.split("|");const orig=JSON.parse(edit.orig);const byId=Object.fromEntries(orig.map(r=>[r.id,r]));
+  const ops=[];
+  try{
+    if(a==="hundreds"){
+      for(const r of edit.draft){
+        if(r._del){if(r.id)ops.push(db.collection("hundreds").doc(r.id).delete());continue}
+        if(r.runs===""||r.runs===null){if(r.id)ops.push(db.collection("hundreds").doc(r.id).delete());continue}
+        const d={fmt:r.fmt,runs:n(r.runs),notOut:!!r.notOut,balls:numOrNull(r.balls),f4:numOrNull(r.f4),f6:numOrNull(r.f6),opp:String(r.opp||"").trim(),host:String(r.host||"").trim(),venue:r.venue||"Home",ground:String(r.ground||"").trim(),date:r.date||""};
+        if(!r.id)ops.push(db.collection("hundreds").add(d));
+        else if(JSON.stringify(d)!==JSON.stringify(pick(byId[r.id],Object.keys(d))))ops.push(db.collection("hundreds").doc(r.id).set(d));
+      }
+    }else if(a==="grounds"){
+      for(const r of edit.draft){
+        const name=String(r.name||"").trim();
+        if(r._del||!name){if(r.id)ops.push(db.collection("grounds").doc(r.id).delete());continue}
+        if(!r.id&&!n(r.mat)&&!n(r.runs))continue;
+        const d={fmt:b,name,country:String(r.country||"").trim(),order:n(r.order),mat:n(r.mat),inns:numOrNull(r.inns),outs:numOrNull(r.outs),runs:n(r.runs),hs:String(r.hs??"").trim(),bf:numOrNull(r.bf),h50:n(r.h50),src:r.src||"you"};
+        if(!r.id)ops.push(db.collection("grounds").doc(`${b}-${slug(name)}-${Date.now().toString(36)}`).set(d));
+        else{const cur=grounds.find(g=>g.id===r.id);const norm=o=>JSON.stringify(Object.keys(d).map(k=>o&&o[k]!==undefined&&o[k]!==""?o[k]:null));if(norm(d)!==norm(cur))ops.push(db.collection("grounds").doc(r.id).set(d))}
+      }
+    }else if(a==="ateams"){
+      for(const r of edit.draft){
+        const d100=n(r.h100)-n(r.b100),d50=n(r.h50)-n(r.b50),id=slug(r.team),cur=adj[id]||{};const old=cur[b]||{};
+        if(d100===n(old.h100)&&d50===n(old.h50))continue;
+        const doc={team:r.team};for(const k of ["ODI","T20","Test","ALL"])if(cur[k])doc[k]=cur[k];doc[b]={h100:d100,h50:d50};
+        ops.push(db.collection("ateamAdj").doc(id).set(doc));
+      }
+    }else if(a==="bowlers"){
+      for(const r of edit.draft){
+        const B=bowlers.find(x=>x.id===r.id);if(!B)continue;
+        const stats=JSON.parse(JSON.stringify(B.stats||{}));const o={};let any=false;
+        for(const k of ["inns","balls","runs","outs","fours","sixes","dots"]){if(r[k]!==""&&r[k]!==undefined&&r[k]!==null){o[k]=n(r[k]);any=true}}
+        if(any)stats[b]=o;else delete stats[b];
+        const name=String(r.name||"").trim()||B.name,team=r.team||B.team,aT=!!r.aTeam;
+        if(JSON.stringify(stats)!==JSON.stringify(B.stats||{})||name!==B.name||team!==B.team||aT!==!!B.aTeam)ops.push(db.collection("bowlers").doc(B.id).update({name,team,stats,aTeam:aT}));
+      }
+    }else{
+      for(const r of edit.draft){
+        if(r._del){if(r.id)ops.push(db.collection("agg").doc(r.id).delete());continue}
+        const name=String(r.name||"").trim();if(!name){if(r.id)ops.push(db.collection("agg").doc(r.id).delete());continue}
+        const d={fmt:a,kind:b,name,order:n(r.order),hs:String(r.hs||"").trim()};
+        for(const k of F_NUM)d[k]=numOrNull(r[k]);
+        for(const k of ["mat","inns","no","runs"])if(d[k]===null)d[k]=0;
+        if(!r.id)ops.push(db.collection("agg").doc(`${a}-${b}-${slug(name)}-${Date.now().toString(36)}`).set(d));
+        else if(JSON.stringify(d)!==JSON.stringify(pick(byId[r.id],Object.keys(d))))ops.push(db.collection("agg").doc(r.id).set(d));
+      }
+    }
+    await Promise.all(ops);edit=null;renderAll();toast(ops.length?`Saved ${ops.length} change${ops.length>1?"s":""}`:"No changes to save");
+  }catch(err){toast("Could not save: "+(err.message||err.code))}
+}
+function pick(o,keys){const r={};for(const k of keys)r[k]=o?o[k]:undefined;return r}
+
+/* ---------- report ---------- */
+function splitOptions(){
+  const fs=fmtsFor($("fFmt").value);
+  const teams=[...new Set(agg.filter(r=>fs.includes(r.fmt)&&r.kind==="team"&&n(r.mat)>0).map(r=>r.name))].sort();
+  const hosts=[...new Set(agg.filter(r=>fs.includes(r.fmt)&&r.kind==="host"&&n(r.mat)>0).map(r=>r.name))].sort();
+  const cur=$("fSplit").value||"all";
+  $("fSplit").innerHTML=`<option value="all">Whole career</option><optgroup label="Venue"><option value="venue:Home">Home (in Pakistan)</option><option value="venue:Away">Away</option><option value="venue:Neutral">Neutral</option></optgroup>
+   <optgroup label="Region"><option value="region:SENA">SENA (Aus, Eng, SA, NZ)</option><option value="region:Asia">Asia (WI, Ind, SL, Ban)</option><option value="region:Others">Others (UAE, neutral)</option></optgroup>
+   <optgroup label="Against">${teams.map(t=>`<option value="team:${esc(t)}">vs ${esc(t)}</option>`).join("")}</optgroup>
+   <optgroup label="Played in">${hosts.map(t=>`<option value="host:${esc(t)}">in ${esc(t)}</option>`).join("")}</optgroup>
+   <optgroup label="At ground">${groundRows($("fFmt").value).filter(r=>r.a.mat>0||r.a.h100>0).sort((x,y)=>y.a.runs-x.a.runs).map(r=>`<option value="ground:${esc(r.key)}">at ${esc(r.name)}</option>`).join("")}</optgroup>`;
+  $("fSplit").value=[...$("fSplit").options].some(o=>o.value===cur)?cur:"all";
+}
+function selection(){
+  const f=$("fFmt").value,s=$("fSplit").value||"all",fs=fmtsFor(f);
+  const [t,v]=s.includes(":")?[s.slice(0,s.indexOf(":")),s.slice(s.indexOf(":")+1)]:["all",""];
+  let rows,label;
+  if(t==="all"){rows=agg.filter(r=>fs.includes(r.fmt)&&r.kind==="team");label="Whole career"}
+  else if(t==="venue"){rows=agg.filter(r=>fs.includes(r.fmt)&&r.kind==="venue"&&r.name===v);label=v==="Home"?"Home · in Pakistan":v}
+  else if(t==="region"){rows=agg.filter(r=>fs.includes(r.fmt)&&r.kind==="host"&&region(r.name)===v);label=v==="SENA"?"In SENA countries":v==="Asia"?"In Asia & West Indies":"Other venues"}
+  else if(t==="team"){rows=agg.filter(r=>fs.includes(r.fmt)&&r.kind==="team"&&r.name===v);label="vs "+v}
+  else if(t==="ground"){const g=groundRows(f).find(r=>r.key===v);const a=g?g.a:total([]);a.noBoundaries=true;return {f,t,v,fs,a,text:FMTNAME[f]+" · at "+(g?g.name:v)}}
+  else{rows=agg.filter(r=>fs.includes(r.fmt)&&r.kind==="host"&&r.name===v);label="in "+v}
+  return {f,t,v,fs,a:total(rows),text:FMTNAME[f]+" · "+label};
+}
+function centsFor(S){return sortedHundreds().filter(h=>S.fs.includes(h.fmt)&&(S.t==="all"||(S.t==="team"&&h.opp===S.v)||(S.t==="host"&&h.host===S.v)||(S.t==="venue"&&h.venue===S.v)||(S.t==="region"&&region(h.host)===S.v)||(S.t==="ground"&&gkey(h.ground)===S.v)))}
+function bigTons(cents){const sc=h=>`${n(h.runs)}${h.notOut?"*":""}`;const lab=h=>`${sc(h)} vs ${h.opp||"?"}${h.date?" ("+String(h.date).slice(0,4)+")":""}`;
+  const d=cents.filter(h=>n(h.runs)>=200&&n(h.runs)<300),t=cents.filter(h=>n(h.runs)>=300);
+  const byOpp=list=>{const m={};list.forEach(h=>{const o=h.opp||"?";m[o]=(m[o]||0)+1});return Object.entries(m).map(([o,c])=>c>1?`${o} (${c})`:o).join(", ")};
+  return {d,t,dText:d.length?d.map(lab).join(" · "):"None yet",tText:t.length?t.map(lab).join(" · "):"None yet",dOpp:byOpp(d),tOpp:byOpp(t)}}
+function renderReport(){
+  splitOptions();
+  const S=selection(),a=S.a,cents=centsFor(S),BT=bigTons(cents);
+  const img=photoUrl?`<img src="${esc(photoUrl)}" alt="">`:"56";
+  const ex=a.extraKnown===false;
+  $("pcard").innerHTML=`<div class="top"><div class="mini">${img}</div><div><div class="eyebrow">Stats card</div><h3>Babar Azam</h3><div class="sel">${esc(S.text)}</div></div></div>
+   <div class="big"><div><div class="v num">${fmtN(a.runs)}</div><div class="k">Runs</div></div><div><div class="v num">${fx(a.avg)}</div><div class="k">Average</div></div><div><div class="v num">${fx(a.sr)}</div><div class="k">Strike rate</div></div><div><div class="v num">${ex?"–":a.h100}</div><div class="k">Hundreds</div></div></div>
+   <div class="small"><div>Matches<b>${a.mat}</b></div><div>Innings<b>${cell(a,"inns")}</b></div><div>Highest<b>${a.hs||"–"}</b></div><div>Fifties<b>${ex?"–":a.h50}</b></div><div>Balls faced<b>${a.bfKnown?fmtN(a.bf):"–"}</b></div><div>Not outs<b>${cell(a,"no")}</b></div><div>Fours<b>${ex||a.noBoundaries?"–":a.f4}</b></div><div>Sixes<b>${ex||a.noBoundaries?"–":a.f6}</b></div></div>
+   <div class="tons"><div><span class="k">Double hundreds</span><b class="num">${BT.d.length}</b><span class="who">${esc(BT.dText)}</span></div><div><span class="k">Triple hundreds</span><b class="num">${BT.t.length}</b><span class="who">${esc(BT.tText)}</span></div>${(()=>{const hv=hsVal(a.hs);const top=Math.max(0,...cents.map(h=>n(h.runs)));return hv!==null&&hv>=200&&top<hv?`<p class="who" style="grid-column:1/-1;margin:0;color:var(--gold-soft)">Highest is ${esc(a.hs)}, but no ${hv>=300?"300+":"200+"} score is in the Centuries tab yet. Add it there with its ground and date to count it here.</p>`:""})()}</div>`;
+  $("selLabel").textContent=S.text;
+  $("repTable").innerHTML="<tbody>"+[["Matches","mat"],["Innings","inns"],["Not outs","no"],["Runs","runs"],["Highest","hs"],["Average","avg"],["Balls faced","bf"],["Strike rate","sr"],["Hundreds","h100"],["Fifties","h50"],["Fours","f4"],["Sixes","f6"]].map(([l,k])=>`<tr><td>${l}</td><td>${cell(a,k)}</td></tr>`).join("")
+    +`<tr><td>Double hundreds (200+)</td><td>${BT.d.length}</td></tr><tr><td>Against</td><td style="font-family:var(--body);white-space:normal">${esc(BT.dOpp||"–")}</td></tr><tr><td>Triple hundreds (300+)</td><td>${BT.t.length}</td></tr><tr><td>Against</td><td style="font-family:var(--body);white-space:normal">${esc(BT.tOpp||"–")}</td></tr>`+"</tbody>";
+  $("repNote").textContent=(!a.bfKnown||ex)?"Some Test host-country rows have no balls, 100s, 50s, 4s or 6s yet. Add them in the Test tab and these fill in.":"";
+  $("cenCount").textContent=cents.length?`${cents.length} listed`:"";
+  $("cenTable").innerHTML=cents.length?centHead(false)+"<tbody>"+cents.map((h,i)=>centRow(h,i)).join("")+"</tbody>"
+   :`<tbody><tr><td style="text-align:center;color:var(--mute);font-family:var(--body);padding:22px">No centuries listed for this selection yet. Add them in the Centuries tab with their ground.</td></tr></tbody>`;
+}
+["fFmt","fSplit"].forEach(id=>$(id).addEventListener("change",renderReport));
+
+/* ---------- centuries ---------- */
+const sortedHundreds=()=>[...hundreds].sort((x,y)=>String(x.date).localeCompare(String(y.date))||n(y.runs)-n(x.runs));
+const centHead=ed=>`<thead><tr><th>#</th><th style="text-align:left">Format</th><th>Score</th>${ed?"<th>Not out</th>":""}<th>Balls</th><th>4s</th><th>6s</th><th>SR</th><th style="text-align:left">Opponent</th><th style="text-align:left">Ground</th><th style="text-align:left">Country</th><th style="text-align:left">Venue</th><th>Date</th>${ed?"<th></th>":""}</tr></thead>`;
+const centRow=(h,i)=>`<tr><td class="num">${i+1}</td><td style="text-align:left;font-family:var(--body)">${FMTNAME[h.fmt]||esc(h.fmt)}</td><td style="color:var(--gold);font-weight:600">${n(h.runs)}${h.notOut?"*":""}</td><td>${h.balls??"–"}</td><td>${h.f4??"–"}</td><td>${h.f6??"–"}</td><td>${n(h.balls)?fx(n(h.runs)/n(h.balls)*100):"–"}</td><td style="text-align:left;font-family:var(--body)">${esc(h.opp||"–")}</td><td style="text-align:left;font-family:var(--body)">${esc(h.ground||"–")}</td><td style="text-align:left;font-family:var(--body)">${esc(h.host||"–")}</td><td style="text-align:left;font-family:var(--body)">${esc(h.venue||"–")}</td><td>${esc(h.date||"–")}</td></tr>`;
+function renderHundreds(){
+  guarded("hundredsBox",()=>{
+    const key="hundreds|all",isEdit=edit&&edit.key===key;
+    const expected=total(agg.filter(r=>r.kind==="team")).h100;
+    const byF=FMTS.map(f=>`${FMTNAME[f]} ${hundreds.filter(h=>h.fmt===f).length}/${total(rowsOf(f,"team")).h100}`).join(" · ");
+    let h=`<div class="tbl-title"><div><h3>${hundreds.length} of ${expected} hundreds listed</h3><span class="hint">${byF}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">${editBar(key,"Add century")}</div></div><div class="tbl-wrap">`;
+    if(isEdit){
+      const opts=(arr,v)=>arr.map(([val,l])=>`<option value="${val}" ${String(val)===String(v)?"selected":""}>${l}</option>`).join("");
+      h+=`<table class="grid">${centHead(true)}<tbody>`+edit.draft.map((r,i)=>r._del?"":`<tr data-i="${i}"><td class="ro num">${i+1}</td>
+        <td><select data-f="fmt" aria-label="Format">${opts([["ODI","ODI"],["T20","T20I"],["Test","Test"]],r.fmt)}</select></td>
+        <td><input type="number" min="100" data-f="runs" value="${esc(r.runs??"")}" style="min-width:64px" aria-label="Score"></td>
+        <td style="text-align:center"><input type="checkbox" data-f="notOut" ${r.notOut?"checked":""} style="width:auto;min-width:0" aria-label="Not out"></td>
+        ${["balls","f4","f6"].map(k=>`<td><input type="number" min="0" data-f="${k}" value="${esc(r[k]??"")}" style="min-width:56px" aria-label="${k}"></td>`).join("")}
+        <td class="ro">–</td>
+        <td><input class="txt" data-f="opp" value="${esc(r.opp||"")}" list="oppList" style="min-width:120px" aria-label="Opponent"></td>
+        <td><input class="txt wide" data-f="ground" value="${esc(r.ground||"")}" placeholder="Ground" aria-label="Ground"></td>
+        <td><input class="txt" data-f="host" value="${esc(r.host||"")}" list="hostList" style="min-width:110px" aria-label="Country"></td>
+        <td><select data-f="venue" aria-label="Venue">${opts([["Home","Home"],["Away","Away"],["Neutral","Neutral"]],r.venue)}</select></td>
+        <td><input type="date" data-f="date" value="${esc(r.date||"")}" aria-label="Date"></td>
+        <td class="ro"><button class="linkbtn del" type="button" data-act="delrow" data-key="${key}" data-i="${i}">Remove</button></td></tr>`).join("")+"</tbody></table>";
+    }else{
+      const list=sortedHundreds();
+      h+=list.length?`<table>${centHead(false)}<tbody>${list.map((x,i)=>centRow(x,i)).join("")}</tbody></table>`
+        :`<div class="empty" style="border:0">No centuries listed yet. Press Edit, then "+ Add century" for each hundred with its ground and date.</div>`;
+    }
+    const opps=[...new Set(agg.filter(r=>r.kind==="team").map(r=>r.name))].sort(),hosts=[...new Set(agg.filter(r=>r.kind==="host").map(r=>r.name)),"Pakistan"].sort();
+    $("hundredsBox").innerHTML=h+`</div><datalist id="oppList">${opps.map(o=>`<option value="${esc(o)}">`).join("")}</datalist><datalist id="hostList">${[...new Set(hosts)].map(o=>`<option value="${esc(o)}">`).join("")}</datalist>`;
+  });
+}
+
+/* ---------- bowlers ---------- */
+function bAgg(b,f){
+  const keys=f==="All"?FMTS:[f];const s={inns:0,balls:0,runs:0,outs:0,fours:0,sixes:0,dots:0};
+  for(const k of keys){const x=(b.stats||{})[k]||{};for(const p in s)s[p]+=n(x[p])}
+  s.sr=s.balls?s.runs/s.balls*100:null;s.avg=s.outs?s.runs/s.outs:null;return s;
+}
+function verdict(s){
+  if(!s.balls)return["none","No data"];
+  if(s.outs===0&&s.balls>=24)return["good","Babar on top"];
+  if(s.avg!==null&&s.avg>=45)return["good","Babar on top"];
+  if(s.avg!==null&&s.avg<20&&s.outs>=2)return["bad","Bowler on top"];
+  return["even","Even contest"];
+}
+const teamsShown=()=>bTeam==="All"?[...BTEAMS,...new Set(bowlers.map(b=>b.team).filter(t=>!BTEAMS.includes(t)))]:[bTeam];
+const bowlerRowsForTable=()=>teamsShown().flatMap(t=>bowlers.filter(b=>b.team===t).sort((x,y)=>n(x.order??99)-n(y.order??99)||x.name.localeCompare(y.name)));
+function renderBowlerChips(){
+  const locked=edit&&edit.key.startsWith("bowlers");
+  $("teamChips").innerHTML=["All",...BTEAMS].map(t=>`<button class="chip" type="button" data-t="${esc(t)}" aria-pressed="${t===bTeam}" ${locked?"disabled":""}>${t==="All"?"All teams":esc(t)}</button>`).join("");
+  $("bFmtChips").innerHTML=(bMode==="table"?FMTS:["All",...FMTS]).map(f=>`<button class="chip" type="button" data-f="${f}" aria-pressed="${f===bFmt}" ${locked?"disabled":""}>${f==="All"?"All formats":FMTNAME[f]}</button>`).join("");
+  $("bModeChips").innerHTML=[["cards","Cards"],["table","Table"]].map(([m,l])=>`<button class="chip" type="button" data-m="${m}" aria-pressed="${m===bMode}" ${locked?"disabled":""}>${l}</button>`).join("");
+}
+$("teamChips").addEventListener("click",e=>{const c=e.target.closest("[data-t]");if(c){bTeam=c.dataset.t;renderBowlers()}});
+$("bFmtChips").addEventListener("click",e=>{const c=e.target.closest("[data-f]");if(c){bFmt=c.dataset.f;renderBowlers()}});
+$("bModeChips").addEventListener("click",e=>{const c=e.target.closest("[data-m]");if(c){bMode=c.dataset.m;if(bMode==="table"&&bFmt==="All")bFmt="ODI";renderBowlers()}});
+const BF=[["inns","Innings"],["balls","Balls"],["runs","Runs"],["outs","Outs"],["fours","4s"],["sixes","6s"],["dots","Dots"]];
+function renderBowlers(){
+  renderBowlerChips();
+  if(!bowlers.length){$("bowlerList").innerHTML=`<div class="empty" style="margin-top:16px">${loaded?"No bowlers yet. Press Add bowler.":"Loading the bowler list…"}</div>`;return}
+  if(bMode==="table"){guarded("bowlerList",drawBowlerTable);return}
+  let h="";
+  for(const t of teamsShown()){
+    const list=bowlers.filter(b=>b.team===t).sort((x,y)=>n(x.order??99)-n(y.order??99)||x.name.localeCompare(y.name));if(!list.length)continue;
+    const tot=list.reduce((acc,b)=>{const s=bAgg(b,bFmt);acc.r+=s.runs;acc.b+=s.balls;acc.o+=s.outs;return acc},{r:0,b:0,o:0});
+    h+=`<div class="team-head"><h3>${esc(t)}</h3><span>${list.length} bowlers · ${fmtN(tot.r)} runs off ${fmtN(tot.b)} balls · out ${tot.o}×</span></div><div class="bgrid">`+
+    list.map(b=>{const s=bAgg(b,bFmt);const [vc,vt]=verdict(s);
+      return `<button class="bcard" type="button" data-b="${esc(b.id)}"><div class="who"><div><h4>${esc(b.name)}${b.aTeam?'<span class="abadge" title="A-team bowler">A</span>':""}</h4><small>${esc(t)}${b.aTeam?" · A-team":""}</small></div><span class="pill ${vc}">${vt}</span></div>
+      <div class="bstats"><div>Balls<b>${s.balls}</b></div><div>Runs<b>${s.runs}</b></div><div>Outs<b>${s.outs}</b></div><div>SR<b>${s.sr===null?"–":s.sr.toFixed(0)}</b></div></div>
+      <div class="bstats"><div>Ave<b>${fx(s.avg,1)}</b></div><div>4s<b>${s.fours}</b></div><div>6s<b>${s.sixes}</b></div><div>Dots<b>${s.dots}</b></div></div></button>`}).join("")+"</div>";
+  }
+  $("bowlerList").innerHTML=h;
+}
+function drawBowlerTable(){
+  const key="bowlers|"+bFmt,isEdit=edit&&edit.key===key;
+  let h=`<div class="tbl-title" style="margin-top:16px"><div><h3>${FMTNAME[bFmt]} head-to-heads</h3><span class="hint">Pick a format above, press Edit, type, then Save.</span></div><div style="display:flex;gap:8px">${editBar(key,null)}</div></div><div class="tbl-wrap"><table class="${isEdit?"grid":""}"><thead><tr><th style="text-align:left">Bowler</th><th style="text-align:left">Team</th><th>A-team</th>${BF.map(([,l])=>`<th>${l}</th>`).join("")}<th>SR</th><th>Ave</th><th>Verdict</th></tr></thead><tbody>`;
+  if(isEdit){
+    h+=edit.draft.map((r,i)=>`<tr data-i="${i}"><td><input class="txt" data-f="name" value="${esc(r.name)}" style="min-width:160px" aria-label="Bowler"></td>
+      <td><select data-f="team" aria-label="Team">${[...BTEAMS,"Other"].map(t=>`<option ${t===r.team?"selected":""}>${t}</option>`).join("")}</select></td>
+      <td style="text-align:center"><input type="checkbox" data-f="aTeam" ${r.aTeam?"checked":""} style="width:auto;min-width:0" aria-label="A-team bowler"></td>
+      ${BF.map(([k,l])=>`<td><input type="number" min="0" inputmode="numeric" data-f="${k}" value="${esc(r[k]??"")}" style="min-width:60px" aria-label="${l}"></td>`).join("")}
+      <td class="ro">–</td><td class="ro">–</td><td class="ro"></td></tr>`).join("");
+  }else{
+    h+=bowlerRowsForTable().map(b=>{const x=(b.stats||{})[bFmt]||{};const s=bAgg(b,bFmt);const [vc,vt]=verdict(s);
+      return `<tr><td>${esc(b.name)}</td><td style="text-align:left;font-family:var(--body)">${esc(b.team)}</td><td style="text-align:center">${b.aTeam?'<span class="abadge">A</span>':'<span class="zero">–</span>'}</td>${BF.map(([k])=>`<td class="${x[k]?"":"zero"}">${x[k]??"–"}</td>`).join("")}<td>${s.sr===null?"–":s.sr.toFixed(1)}</td><td>${fx(s.avg,1)}</td><td><span class="pill ${vc}">${vt}</span></td></tr>`}).join("");
+  }
+  $("bowlerList").innerHTML=h+"</tbody></table></div>";
+}
+$("bowlerList").addEventListener("click",e=>{const c=e.target.closest(".bcard[data-b]");if(c)openBowler(bowlers.find(b=>b.id===c.dataset.b))});
+$("addBowler").onclick=()=>openBowler(null);
+function openBowler(b){
+  if(!writable())return toast(db?"Only editors can change bowlers":"Sign in to claude.ai to edit");
+  const isNew=!b;b=b||{name:"",team:bTeam==="All"?"Australia":bTeam,stats:{}};
+  let h=`<h3>${isNew?"Add a bowler":esc(b.name)}</h3><p class="hint" style="margin:6px 0 0">Babar's record against this bowler. Leave a format blank if they never met in it.</p>
+  <div class="fgrid"><div class="field span2"><label for="bName">Bowler</label><input id="bName" value="${esc(b.name)}"></div><div class="field span2"><label for="bTeam">Team</label><select id="bTeam">${[...BTEAMS,"Other"].map(t=>`<option ${t===b.team?"selected":""}>${t}</option>`).join("")}</select></div></div>
+  <label style="display:flex;gap:8px;align-items:center;margin-top:12px;cursor:pointer"><input type="checkbox" id="bA" ${b.aTeam?"checked":""}> <span>A-team bowler <span class="hint">(counts in the vs A-teams tab)</span></span></label>`;
+  for(const f of FMTS){const x=(b.stats||{})[f]||{};
+    h+=`<div class="fmt-block"><h4>${FMTNAME[f]}</h4><div class="fgrid">`+BF.map(([k,l])=>`<div class="field"><label for="b_${f}_${k}">${l}</label><input id="b_${f}_${k}" type="number" min="0" inputmode="numeric" value="${x[k]??""}"></div>`).join("")+`</div></div>`}
+  h+=`<div class="row-actions"><div>${isNew?"":`<button class="btn ghost small" type="button" id="bDel" style="border-color:var(--bad);color:var(--bad)">Remove bowler</button>`}</div><div style="display:flex;gap:8px"><button class="btn ghost" type="button" id="bClose">Cancel</button><button class="btn" type="button" id="bSave">Save</button></div></div>`;
+  $("sheetBox").innerHTML=h;$("sheet").hidden=false;$("bName").focus();
+  $("bClose").onclick=()=>$("sheet").hidden=true;
+  $("bSave").onclick=async()=>{
+    const name=$("bName").value.trim();if(!name)return toast("Enter the bowler's name");
+    const stats={};for(const f of FMTS){const o={};let any=false;for(const [k] of BF){const v=$(`b_${f}_${k}`).value;if(v!==""){o[k]=n(v);any=true}}if(any)stats[f]=o}
+    const id=isNew?slug(name)+"-"+Date.now().toString(36):b.id;
+    try{const doc={name,team:$("bTeam").value,stats,order:b.order??99,aTeam:$("bA").checked};if(b.src)doc.src=b.src;await db.collection("bowlers").doc(id).set(doc);$("sheet").hidden=true;toast("Saved")}catch(err){toast("Could not save: "+(err.message||err.code))}
+  };
+  if(!isNew)$("bDel").onclick=async ev=>{const btn=ev.currentTarget;
+    if(btn.dataset.c!=="1"){btn.dataset.c="1";btn.textContent="Tap again to remove";return}
+    try{await db.collection("bowlers").doc(b.id).delete();$("sheet").hidden=true;toast("Bowler removed")}catch(err){toast("Could not remove: "+(err.message||err.code))}};
+}
+$("sheet").addEventListener("click",e=>{if(e.target===$("sheet"))$("sheet").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("sheet").hidden=true});
+
+/* ---------- photo ---------- */
+function renderPhoto(){
+  const img=$("photoImg");
+  if(photoUrl){img.src=photoUrl;img.hidden=false;$("photoPh").hidden=true;$("photoBtn").textContent="Change photo"}
+  else{img.hidden=true;$("photoPh").hidden=false;$("photoBtn").textContent="Upload photo"}
+}
+$("photoBtn").onclick=()=>{if(!assets)return toast("Photo upload is for editors of this page, signed in");$("photoFile").click()};
+$("photoFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{toast("Uploading…");const r=await assets.upload(f);await db.doc("settings/profile").set({photo:r.id});toast("Photo saved")}
+  catch(err){toast("Upload failed: "+(err.message||err.code))}
+  e.target.value="";
+});
+
+/* ---------- card image ---------- */
+async function drawCard(){
+  const c=$("cardCanvas"),x=c.getContext("2d"),W=1080,H=1350;
+  try{await document.fonts.ready}catch(e){}
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#16412F");g.addColorStop(.55,"#0B1E16");g.addColorStop(1,"#071310");
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.strokeStyle="#D4B062";x.lineWidth=3;x.strokeRect(28,28,W-56,H-56);x.globalAlpha=.4;x.lineWidth=1.5;x.strokeRect(44,44,W-88,H-88);x.globalAlpha=1;
+  const px=600,py=110,pw=380,ph=480,rad=190;
+  const arch=()=>{x.beginPath();x.moveTo(px,py+rad);x.arc(px+rad,py+rad,rad,Math.PI,0);x.lineTo(px+pw,py+ph);x.lineTo(px,py+ph);x.closePath()};
+  x.save();arch();x.clip();x.fillStyle="#0A1B14";x.fillRect(px,py,pw,ph);
+  let drew=false;
+  if(photoUrl){try{const im=new Image();im.src=photoUrl;await im.decode();const s=Math.max(pw/im.width,ph/im.height);x.drawImage(im,px+(pw-im.width*s)/2,py+(ph-im.height*s)/2,im.width*s,im.height*s);drew=true}catch(e){}}
+  if(!drew){x.fillStyle="rgba(212,176,98,.2)";x.font="500 200px 'Bodoni Moda', Georgia, serif";x.textAlign="center";x.fillText("56",px+pw/2,py+ph/2+70)}
+  x.restore();x.strokeStyle="#D4B062";x.lineWidth=2;arch();x.stroke();
+  x.textAlign="left";x.fillStyle="#D4B062";x.font="500 22px Outfit, sans-serif";x.fillText("PAKISTAN  ·  SHIRT 56",100,170);
+  x.fillStyle="#F2EBDA";x.font="500 116px 'Bodoni Moda', Georgia, serif";x.fillText("Babar",96,300);
+  x.fillStyle="#D4B062";x.font="italic 500 116px 'Bodoni Moda', Georgia, serif";x.fillText("Azam",96,420);
+  const S=selection(),a=S.a,ex=a.extraKnown===false;
+  x.fillStyle="#9DB0A6";x.font="400 26px Outfit, sans-serif";
+  const words=S.text.toUpperCase().split(" ");let line="",ly=500;
+  for(const w of words){const t=line?line+" "+w:w;if(x.measureText(t).width>460){x.fillText(line,100,ly);ly+=36;line=w}else line=t}x.fillText(line,100,ly);
+  x.strokeStyle="rgba(212,176,98,.4)";x.lineWidth=1.5;x.beginPath();x.moveTo(100,660);x.lineTo(W-100,660);x.moveTo(100,880);x.lineTo(W-100,880);x.stroke();
+  const big=[["RUNS",fmtN(a.runs)],["AVERAGE",fx(a.avg)],["STRIKE RATE",fx(a.sr)],["HUNDREDS",ex?"–":String(a.h100)]];const cw=(W-200)/4;
+  big.forEach(([k,v],i)=>{const cx=100+cw*i+cw/2;x.textAlign="center";x.fillStyle="#F2EBDA";x.font="500 76px 'Bodoni Moda', Georgia, serif";x.fillText(v,cx,790);x.fillStyle="#9DB0A6";x.font="500 20px Outfit, sans-serif";x.fillText(k,cx,840)});
+  const sm=[["MATCHES",a.mat],["INNINGS",cell(a,"inns")],["HIGHEST",a.hs||"–"],["FIFTIES",ex?"–":a.h50],["BALLS",a.bfKnown?fmtN(a.bf):"–"],["NOT OUTS",cell(a,"no")],["FOURS",ex||a.noBoundaries?"–":a.f4],["SIXES",ex||a.noBoundaries?"–":a.f6]];
+  sm.forEach(([k,v],i)=>{const col=i%4,row=Math.floor(i/4),cx=100+cw*col;x.textAlign="left";x.fillStyle="#9DB0A6";x.font="500 18px Outfit, sans-serif";x.fillText(k,cx,960+row*130);x.fillStyle="#F2EBDA";x.font="500 44px 'IBM Plex Mono', monospace";x.fillText(String(v),cx,1012+row*130)});
+  {const BT=bigTons(centsFor(S));x.strokeStyle="rgba(212,176,98,.4)";x.beginPath();x.moveTo(100,1180);x.lineTo(W-100,1180);x.stroke();
+  [["DOUBLE 100s",BT.d.length,BT.dOpp],["TRIPLE 100s",BT.t.length,BT.tOpp]].forEach(([k,v,w],i)=>{const cx=100+(W-200)/2*i;x.textAlign="left";x.fillStyle="#9DB0A6";x.font="500 18px Outfit, sans-serif";x.fillText(k,cx,1215);
+    x.fillStyle="#D4B062";x.font="500 40px 'Bodoni Moda', Georgia, serif";x.fillText(String(v),cx,1258);
+    if(w){x.fillStyle="#9DB0A6";x.font="400 18px Outfit, sans-serif";let t="vs "+w;while(x.measureText(t).width>(W-200)/2-80&&t.length>4)t=t.slice(0,-2)+"…";x.fillText(t,cx+60,1252)}});}
+  x.textAlign="center";x.fillStyle="#8E7A45";x.font="400 18px Outfit, sans-serif";x.fillText("BABAR AZAM STATS BOOK",W/2,H-48);
+  return new Promise(r=>c.toBlob(r,"image/png"));
+}
+$("saveCard").onclick=async()=>{
+  if(!downloads)return toast("Saving images is not available in this view");
+  try{const blob=await drawCard();await downloads.save({filename:"babar-azam-"+slug(selection().text)+".png",data:blob})}
+  catch(err){if(err&&err.code!=="declined")toast("Could not save the card"+(err&&err.message?": "+err.message:""))}
+};
+
+/* ---------- render all ---------- */
+/* ---------- vs A-teams ---------- */
+function renderAteams(){guarded("v-ateams",drawAteams)}
+function drawAteams(){
+  const fs=fmtsFor(aFmt),bf=aFmt==="ALL"?"All":aFmt;
+  const rows=ATEAMS.map(t=>{
+    const team=total(agg.filter(r=>fs.includes(r.fmt)&&r.kind==="team"&&r.name===t));
+    const list=bowlers.filter(b=>b.team===t&&b.aTeam).sort((x,y)=>n(x.order??99)-n(y.order??99)||x.name.localeCompare(y.name));
+    const bs={balls:0,runs:0,outs:0,dots:0,fours:0,sixes:0,withData:0};
+    for(const b of list){const s=bAgg(b,bf);for(const k of ["balls","runs","outs","dots","fours","sixes"])bs[k]+=s[k];if(s.balls)bs.withData++}
+    bs.sr=bs.balls?bs.runs/bs.balls*100:null;bs.avg=bs.outs?bs.runs/bs.outs:null;bs.dotp=bs.balls?bs.dots/bs.balls*100:null;
+    return {t,team,list,bs};
+  });
+  const T=total(agg.filter(r=>fs.includes(r.fmt)&&r.kind==="team"&&ATEAMS.includes(r.name)));
+  const B={balls:0,runs:0,outs:0,dots:0};rows.forEach(r=>{for(const k in B)B[k]+=r.bs[k]});
+  B.sr=B.balls?B.runs/B.balls*100:null;B.avg=B.outs?B.runs/B.outs:null;B.dotp=B.balls?B.dots/B.balls*100:null;
+  const aKey="ateams|"+aFmt,aEdit=edit&&edit.key===aKey;
+  rows.forEach(r=>r.ac=aCounts(r.t,aFmt));const A100=rows.reduce((a,r)=>a+r.ac.h100,0),A50=rows.reduce((a,r)=>a+r.ac.h50,0);
+  const nB=rows.reduce((a,r)=>a+r.list.length,0),nD=rows.reduce((a,r)=>a+r.bs.withData,0);
+  const chips=["ODI","T20","Test","ALL"].map(f=>`<button class="chip" type="button" data-af="${f}" aria-pressed="${f===aFmt}" ${edit&&edit.key.startsWith("ateams")?"disabled":""}>${FMTNAME[f]}</button>`).join("");
+  const dash=k=>Array(k).fill('<td class="zero">–</td>').join("");
+  let h=`<div class="sec-head"><div><h2>vs A-teams</h2><p>Babar against the eight strongest sides: his full record against each team, and his record against that team's first-choice (A-team) bowlers.</p></div><div class="chips" id="aFmtChips">${chips}</div></div>
+  <div class="career" style="margin-top:0">${[["Runs vs top 8",fmtN(T.runs)],["Average",fx(T.avg)],["Strike rate",fx(T.sr)],["100s / 50s",T.h100+" / "+T.h50],["Runs vs A-bowlers",B.balls?fmtN(B.runs):"–"],["Balls · Outs",B.balls?fmtN(B.balls)+" · "+B.outs:"–"]].map(([k,v])=>`<div><div class="v num" style="font-size:24px">${v}</div><div class="k">${k}</div></div>`).join("")}</div>
+  <div class="tbl-block" style="margin-top:24px"><div class="tbl-title"><div><h3>${FMTNAME[aFmt]} · against each team's A-team bowlers</h3><span class="hint">${nD} of ${nB} A-team bowlers have numbers</span></div><div style="display:flex;gap:8px">${editBar(aKey,null)}</div></div>
+  <div class="tbl-wrap"><table class="sticky${aEdit?" grid":""}"><thead><tr><th>Team</th><th>100s vs A</th><th>50s vs A</th><th>Bowlers</th><th>Runs</th><th>Balls</th><th>Outs</th><th>Ave</th><th>SR</th><th>4s</th><th>6s</th><th>Dot %</th></tr></thead><tbody>`;
+  h+=rows.map((r,i)=>{const b=r.bs,c=r.ac;const cells=aEdit?`<td><input type="number" min="0" inputmode="numeric" data-f="h100" value="${esc(edit.draft[i].h100)}" style="min-width:56px" aria-label="100s vs A, ${esc(r.t)}"></td><td><input type="number" min="0" inputmode="numeric" data-f="h50" value="${esc(edit.draft[i].h50)}" style="min-width:56px" aria-label="50s vs A, ${esc(r.t)}"></td>`
+      :`<td style="color:var(--gold);font-weight:600">${c.h100}${c.h100!==c.b100?`<span class="hint" style="font-weight:400"> /${c.b100}</span>`:""}</td><td>${c.h50}${c.h50!==c.b50?`<span class="hint"> /${c.b50}</span>`:""}</td>`;
+    return `<tr${aEdit?` data-i="${i}"`:""}><td>${esc(r.t)}</td>${cells}<td>${b.withData}/${r.list.length}</td>`+(b.balls?`<td style="color:var(--gold);font-weight:600">${fmtN(b.runs)}</td><td>${fmtN(b.balls)}</td><td>${b.outs}</td><td>${fx(b.avg,1)}</td><td>${b.sr.toFixed(1)}</td><td>${b.fours}</td><td>${b.sixes}</td><td>${b.dotp.toFixed(0)}%</td>`:dash(8))+`</tr>`}).join("");
+  const B4=rows.reduce((a,r)=>a+r.bs.fours,0),B6=rows.reduce((a,r)=>a+r.bs.sixes,0);
+  h+=`<tr class="total"><td>Top 8 total</td><td>${A100}</td><td>${A50}</td><td>${nD}/${nB}</td>`+(B.balls?`<td>${fmtN(B.runs)}</td><td>${fmtN(B.balls)}</td><td>${B.outs}</td><td>${fx(B.avg,1)}</td><td>${B.sr.toFixed(1)}</td><td>${B4}</td><td>${B6}</td><td>${B.dotp.toFixed(0)}%</td>`:dash(8))+`</tr></tbody></table></div>
+  <p class="hint" style="margin-top:8px">100s vs A and 50s vs A start from Babar's hundreds and fifties against that team; where they have been changed, the full count shows after the slash. Press Edit to change them. Runs, balls and outs add up the A-team bowler cards below.</p></div>
+  <div class="tbl-block" style="margin-top:24px"><div class="tbl-title"><div><h3>${FMTNAME[aFmt]} · against the whole team</h3></div></div>
+  <div class="tbl-wrap"><table class="sticky"><thead><tr><th>Team</th><th>Mat</th><th>Inns</th><th>Runs</th><th>Ave</th><th>SR</th><th>HS</th><th>100</th><th>50</th></tr></thead><tbody>`;
+  const maxR=Math.max(1,...rows.map(r=>r.team.runs));
+  h+=rows.map(r=>`<tr><td>${esc(r.t)}</td><td>${r.team.mat}</td><td>${r.team.inns}</td><td><span class="bar" style="width:${Math.round(r.team.runs/maxR*40)}px"></span>${fmtN(r.team.runs)}</td><td>${fx(r.team.avg)}</td><td>${cell(r.team,"sr")}</td><td>${r.team.hs||"–"}</td><td>${cell(r.team,"h100")}</td><td>${cell(r.team,"h50")}</td></tr>`).join("");
+  h+=`<tr class="total"><td>Top 8 total</td><td>${T.mat}</td><td>${T.inns}</td><td>${fmtN(T.runs)}</td><td>${fx(T.avg)}</td><td>${cell(T,"sr")}</td><td>${T.hs||"–"}</td><td>${cell(T,"h100")}</td><td>${cell(T,"h50")}</td></tr></tbody></table></div>
+  <p class="hint" style="margin-top:8px">Team numbers come from the ${aFmt==="ALL"?"ODI, T20I and Test":FMTNAME[aFmt]} team tables. Tap any bowler below to edit, or tick "A-team" on a bowler in the vs Bowlers tab to add them here.</p></div>
+  <div class="ateam-grid">`;
+  h+=rows.map(r=>{const s=r.bs;const [vc,vt]=verdict({balls:s.balls,outs:s.outs,avg:s.avg});
+    return `<div class="ateam-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><div><h4>${esc(r.t)}</h4><div class="sub">${r.list.length} A-team bowlers · ${FMTNAME[aFmt]}</div></div><span class="pill ${vc}">${vt}</span></div>
+    <div class="mini-strip"><div>Team runs<b>${fmtN(r.team.runs)}</b></div><div>100 / 50 vs A<b>${r.ac.h100} / ${r.ac.h50}</b></div><div>Runs vs A<b>${s.balls?fmtN(s.runs):"–"}</b></div><div>Balls · Outs<b>${s.balls?fmtN(s.balls)+" · "+s.outs:"–"}</b></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Bowler</th><th>Runs</th><th>Balls</th><th>Out</th><th>Ave</th><th>SR</th></tr></thead><tbody>`+
+    (r.list.length?r.list.map(b=>{const x=bAgg(b,bf);return `<tr data-ab="${esc(b.id)}" title="Edit ${esc(b.name)}"><td>${esc(b.name)}</td><td class="${x.balls?"":"zero"}" style="${x.balls?"color:var(--gold);font-weight:600":""}">${x.balls?x.runs:"–"}</td><td class="${x.balls?"":"zero"}">${x.balls||"–"}</td><td class="${x.balls?"":"zero"}">${x.balls?x.outs:"–"}</td><td class="${x.balls?"":"zero"}">${fx(x.avg,1)}</td><td class="${x.balls?"":"zero"}">${x.sr===null?"–":x.sr.toFixed(0)}</td></tr>`}).join("")
+     :`<tr><td colspan="6" style="text-align:center;color:var(--mute);font-family:var(--body)">No A-team bowlers marked yet</td></tr>`)+`</tbody></table></div></div>`}).join("");
+  $("v-ateams").innerHTML=h+"</div>";
+}
+$("v-ateams").addEventListener("click",e=>{
+  const c=e.target.closest("[data-af]");if(c){aFmt=c.dataset.af;renderAteams();return}
+  const r=e.target.closest("tr[data-ab]");if(r)openBowler(bowlers.find(b=>b.id===r.dataset.ab));
+});
+
+/* ---------- grounds ---------- */
+let grounds=[],gFmt="ALL",gSort="runs";
+const GAL={nationalbankcricketarena:"nationalstadium",sheikhzayedstadium:"sheikhzayedcricketstadium",johannesburgstadium:"wanderersstadium",wanderers:"wanderersstadium",newlandscricketstadium:"newlands",emiratesoldtrafford:"oldtrafford",kiaoval:"kenningtonoval",theoval:"kenningtonoval",oval:"kenningtonoval",melbournecricketgorund:"melbournecricketground",mcg:"melbournecricketground",manguangoval:"mangaungoval",gabba:"gabba"};
+const isUserCentury=h=>!/^(odi|test|t20)-\d{4}-\d{2}-\d{2}-\d+$/.test(String(h.id||""));
+function userCenturyDocs(fs){
+  const list=hundreds.filter(h=>isUserCentury(h)&&fs.includes(h.fmt)&&h.ground&&n(h.runs)>0).sort((x,y)=>String(x.date).localeCompare(String(y.date)));
+  const seen=[];return list.map(h=>{const k=gkey(h.ground),t=Date.parse(h.date)||0;
+    const same=h.fmt==="Test"&&seen.some(p=>p.k===k&&p.f===h.fmt&&Math.abs(p.t-t)<=5*864e5);seen.push({k,f:h.fmt,t});
+    return {fmt:h.fmt,name:h.ground,country:h.host||"",mat:same?0:1,inns:null,outs:h.notOut?0:1,runs:n(h.runs),hs:n(h.runs)+(h.notOut?"*":""),bf:h.balls===null||h.balls===undefined||h.balls===""?null:n(h.balls),h50:0,virtual:true}})}
+function gkey(s){const k=String(s||"").split(",")[0].toLowerCase().trim().replace(/^the\s+/,"").replace(/[^a-z0-9]/g,"");return GAL[k]||k}
+function groundRows(f){
+  const fs=fmtsFor(f),m=new Map();
+  for(const g of [...grounds,...userCenturyDocs(fs)]){if(!fs.includes(g.fmt))continue;const k=gkey(g.name);if(!m.has(k))m.set(k,{key:k,name:g.name,country:g.country||"",docs:[]});m.get(k).docs.push(g)}
+  for(const h of hundreds){if(!fs.includes(h.fmt)||!h.ground)continue;const k=gkey(h.ground);if(!m.has(k))m.set(k,{key:k,name:h.ground,country:h.host||"",docs:[]})}
+  return [...m.values()].map(r=>{const a=total(r.docs.map(d=>({...d,h100:0})));a.h100=hundreds.filter(h=>fs.includes(h.fmt)&&gkey(h.ground)===r.key).length;a.extraKnown=true;return {...r,a}});
+}
+function sortGrounds(rows){const v={runs:r=>r.a.runs,mat:r=>r.a.mat,avg:r=>r.a.avg??-1,h100:r=>r.a.h100*1e4+r.a.h50};return [...rows].sort((x,y)=>v[gSort](y)-v[gSort](x)||x.name.localeCompare(y.name))}
+function renderGrounds(){guarded("v-grounds",drawGrounds)}
+function drawGrounds(){
+  const key="grounds|"+gFmt,isEdit=edit&&edit.key===key,single=gFmt!=="ALL",locked=edit&&edit.key.startsWith("grounds");
+  const rows=sortGrounds(groundRows(gFmt));
+  const T=total(rows.flatMap(r=>r.docs.map(d=>({...d,h100:0}))));T.h100=rows.reduce((s,r)=>s+r.a.h100,0);T.extraKnown=true;
+  const ref=total(agg.filter(r=>fmtsFor(gFmt).includes(r.fmt)&&r.kind==="team"));
+  const fchips=["ODI","T20","Test","ALL"].map(f=>`<button class="chip" type="button" data-gf="${f}" aria-pressed="${f===gFmt}" ${locked?"disabled":""}>${FMTNAME[f]}</button>`).join("");
+  const schips=[["runs","Runs"],["mat","Matches"],["avg","Average"],["h100","100s"]].map(([k,l])=>`<button class="chip" type="button" data-gs="${k}" aria-pressed="${k===gSort}" ${locked?"disabled":""}>${l}</button>`).join("");
+  const top=rows.filter(r=>r.a.mat>0)[0];
+  let h=`<div class="sec-head"><div><h2>Ground by ground</h2><p>Matches, runs, average, strike rate, hundreds and fifties at every ground. Hundreds are counted from the Centuries tab.</p></div><div class="chips">${fchips}</div></div>
+  <div class="career" style="margin-top:0">${[["Grounds",rows.filter(r=>r.a.mat>0).length],["Matches",fmtN(T.mat)],["Runs",fmtN(T.runs)],["Average",fx(T.avg)],["100s / 50s",T.h100+" / "+T.h50],["Most runs at",top?top.name.split(",")[0]:"–"]].map(([k,v])=>`<div><div class="v num" style="font-size:22px" title="${esc(v)}">${esc(v)}</div><div class="k">${k}</div></div>`).join("")}</div>
+  <div class="tbl-block" style="margin-top:24px"><div class="tbl-title"><div><h3>${FMTNAME[gFmt]} · grounds</h3><span class="hint">${single||gFmt==="ALL"?`These rows hold ${fmtN(T.mat)} of ${fmtN(ref.mat)} matches and ${fmtN(T.runs)} of ${fmtN(ref.runs)} runs in the ${FMTNAME[gFmt]} team table.`:""}</span></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${single?editBar(key,"Add ground"):`<span class="hint">Pick ODI, T20I or Test to edit</span>`}</div></div>
+  <div class="chips" style="margin:0 0 10px"><span class="hint" style="align-self:center">Sort by</span>${schips}</div>
+  <div class="tbl-wrap"><table class="sticky${isEdit?" grid":""}"><thead><tr>${isEdit?`<th>Ground</th><th style="text-align:left">Country</th><th>Mat</th><th>Inns</th><th>Outs</th><th>Runs</th><th>HS</th><th>Ave</th><th>BF</th><th>SR</th><th>100</th><th>50</th><th></th>`:`<th>Ground</th><th>Mat</th><th>Runs</th><th>Ave</th><th>SR</th><th>100</th><th>50</th><th>HS</th><th>Inns</th><th>Outs</th><th>BF</th><th style="text-align:left">Country</th>`}</tr></thead><tbody>`;
+  if(isEdit){
+    const inp=(r,i,k,w,txt)=>`<td><input ${txt?'class="txt"':'type="number" min="0" inputmode="numeric"'} data-f="${k}" value="${esc(r[k]??"")}" style="min-width:${w}px${txt&&k==="hs"?";text-align:right":""}" aria-label="${k}"></td>`;
+    h+=edit.draft.map((r,i)=>r._del?"":`<tr data-i="${i}"><td><input class="txt wide" data-f="name" value="${esc(r.name)}" placeholder="Ground, City" aria-label="Ground">${r.uc?`<span class="hint" style="display:block;padding:0 8px 6px">+ ${r.uc} of your centuries are added on top</span>`:""}</td>${inp(r,i,"country",110,true)}${inp(r,i,"mat",52)}${inp(r,i,"inns",52)}${inp(r,i,"outs",52)}${inp(r,i,"runs",64)}${inp(r,i,"hs",60,true)}<td class="ro">–</td>${inp(r,i,"bf",64)}<td class="ro">–</td><td class="ro num">${r.h100||0}</td>${inp(r,i,"h50",48)}<td class="ro"><button class="linkbtn del" type="button" data-act="delrow" data-key="${key}" data-i="${i}">Remove</button></td></tr>`).join("");
+  }else{
+    const maxR=Math.max(1,...rows.map(r=>r.a.runs));
+    h+=rows.map(r=>{const a=r.a,z=a.mat===0;const nm=String(r.name).split(",");const D=v=>z?"–":v;return `<tr><td title="${esc(r.name)}"><span class="gname">${esc(nm[0].trim())}</span>${nm.length>1?`<span class="gcity">${esc(nm.slice(1).join(",").trim())}</span>`:""}${(u=>u?`<span class="gcity" style="color:var(--gold-soft)">incl. ${u} of your centuries</span>`:"")(r.docs.filter(x=>x.virtual).length)}</td><td class="${z?"zero":""}">${D(a.mat)}</td><td><span class="bar" style="width:${Math.round(a.runs/maxR*40)}px"></span>${D(fmtN(a.runs))}</td><td>${fx(a.avg)}</td><td>${fx(a.sr)}</td><td style="color:var(--gold);font-weight:600">${a.h100||"–"}</td><td>${z&&!a.h50?"–":a.h50}</td><td>${a.hs||"–"}</td><td class="${z?"zero":""}">${D(cell(a,"inns"))}</td><td class="${z?"zero":""}">${D(a.outs)}</td><td class="${z?"zero":""}">${D(cell(a,"bf"))}</td><td style="text-align:left;font-family:var(--body);color:var(--mute)">${esc(r.country||"–")}</td></tr>`}).join("");
+    h+=`<tr class="total"><td>Total</td><td>${fmtN(T.mat)}</td><td>${fmtN(T.runs)}</td><td>${fx(T.avg)}</td><td>${fx(T.sr)}</td><td>${T.h100}</td><td>${T.h50}</td><td>${T.hs||"–"}</td><td>${cell(T,"inns")}</td><td>${T.outs}</td><td>${cell(T,"bf")}</td><td></td></tr>`;
+    if(!rows.length)h+=`<tr><td colspan="12" style="text-align:center;color:var(--mute);font-family:var(--body);padding:22px">No grounds yet. Pick a format and press Edit, then Add ground.</td></tr>`;
+  }
+  h+=`</tbody></table></div><p class="hint" style="margin-top:8px">Centuries you added yourself in the Centuries tab are added to their ground: one match (two hundreds at the same ground within five days in a Test count as one match), their runs, balls, and an out unless not out. Average is runs ÷ outs. A ground with a dash for matches has a hundred in the Centuries tab but no ground numbers yet; press Edit to fill it. ODI and Test figures came from statz.ai and miss some matches, so check them against Cricinfo.</p></div>`;
+  $("v-grounds").innerHTML=h;
+}
+$("v-grounds").addEventListener("click",e=>{const f=e.target.closest("[data-gf]");if(f&&!f.disabled){gFmt=f.dataset.gf;renderGrounds();return}const so=e.target.closest("[data-gs]");if(so&&!so.disabled){gSort=so.dataset.gs;renderGrounds()}});
+
+function renderAll(){renderCareer();renderReport();FMTS.forEach(renderFormat);renderAllFormats();renderGrounds();renderAteams();renderHundreds();renderBowlers()}
+renderAll();renderPhoto();
+show((location.hash||"#report").slice(1));
+window.addEventListener("beforeunload",e=>{if(edit){e.preventDefault();e.returnValue=""}});
+
+/* ---------- capabilities ---------- */
+(async()=>{
+  if(!window.claude||!window.claude.use){$("cardHint").textContent="Open this page on claude.ai to load the stats.";return}
+  const [d,u,as,dl]=await Promise.all([claude.use("db"),claude.use("user"),claude.use("assets"),claude.use("downloads")]);
+  db=d;assets=as;downloads=dl;
+  if(u){try{if(u.can("data.write")===false)canWrite=false}catch(e){}}
+  if(!canWrite)$("addBowler").disabled=true;
+  if(!as)$("photoBtn").hidden=true;
+  if(!dl){$("saveCard").disabled=true;$("cardHint").textContent="Saving the card as an image is not available here."}
+  if(!db){$("cardHint").textContent="Sign in to claude.ai to load and save the stats.";renderAll();return}
+  let got=0;const done=()=>{if(++got>=2)loaded=true};
+  db.collection("agg").onSnapshot(s=>{agg=s.docs.map(x=>({id:x.id,...x.data()}));done();renderAll()},e=>toast("Could not load stats: "+e.message));
+  db.collection("bowlers").onSnapshot(s=>{bowlers=s.docs.map(x=>({id:x.id,...x.data()}));done();renderBowlers();renderAteams()},e=>toast("Could not load bowlers: "+e.message));
+  db.collection("grounds").onSnapshot(s=>{grounds=s.docs.map(x=>({id:x.id,...x.data()}));renderGrounds();renderReport()},()=>{});
+  db.collection("ateamAdj").onSnapshot(s=>{adj={};s.docs.forEach(x=>adj[x.id]=x.data());renderAteams()},()=>{});
+  db.collection("hundreds").onSnapshot(s=>{hundreds=s.docs.map(x=>({id:x.id,...x.data()}));renderReport();renderHundreds();renderGrounds()},()=>{});
+  db.doc("settings/profile").onSnapshot(s=>{const p=s.exists?s.data():null;photoUrl=p&&p.photo?(window.__blobUrl?window.__blobUrl(p.photo):"/_blob/"+p.photo):null;renderPhoto();renderReport()},()=>{});
+})();
+})();
+
+</script>
+</body></html>

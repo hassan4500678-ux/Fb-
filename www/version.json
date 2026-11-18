@@ -1,0 +1,9 @@
+{
+ "app": 1,
+ "data": 1,
+ "files": [
+  "index.html",
+  "app-shim.js"
+ ],
+ "notes": "First release of the Babar Azam Stats Book app."
+}
