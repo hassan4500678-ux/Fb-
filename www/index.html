@@ -320,7 +320,35 @@ const F_NUM=["mat","inns","no","runs","bf","h100","h50","f4","f6"];
 const COLS=[["mat","Mat"],["inns","Inns"],["no","NO"],["runs","Runs"],["hs","HS"],["avg","Ave"],["bf","BF"],["sr","SR"],["h100","100"],["h50","50"],["f4","4s"],["f6","6s"]];
 
 let db=null, assets=null, downloads=null, canWrite=true, loaded=false;
-let agg=[], bowlers=[], hundreds=[], photoUrl=null;
+let agg=[], aggBase=[], bowlers=[], hundreds=[], photoUrl=null;
+/* Centuries that were already counted by hand in the team, host and venue tables (as of 19 Nov 2026).
+   Any other century in the Centuries tab is added to those tables automatically. */
+const COUNTED_CENTURIES=new Set(["0cdvl5hlg2yi0he8ojve", "4pgule81b64qfexc35r2", "5r3n8edex06e5nizo88d", "6t8651sdmzt9hx529fwz", "c3khs1sylw2sfzjr1cms", "cdgaia75fo6jtmc9gnbu", "efuvoqggkmitz23092dr", "eif7vcdwhm2ui8yn5lb5", "erlda065t5r0ut3kzn15", "gqb409aj68la8mtj4fep", "kpc0iv0nvjljzod6ht06", "kpe0yjw5a2t0tqgl8cxb", "lmy0e29oeodpm87okckf", "lt55q8kugvrqzqyppsf3", "mlovid5zbhocb0d2tjys", "ndsxrkns0uoja4j5y9qr", "odi-2016-09-30-120", "odi-2016-10-02-123", "odi-2016-10-05-117", "odi-2017-01-26-100", "odi-2017-04-09-125", "odi-2017-10-13-103", "odi-2017-10-16-101", "odi-2018-07-22-106", "odi-2019-05-17-115", "odi-2019-06-26-101", "odi-2019-09-30-115", "odi-2020-11-03-125", "odi-2021-04-02-103", "odi-2021-07-13-158", "odi-2022-03-31-114", "odi-2022-04-02-105", "odi-2022-06-08-103", "odi-2023-05-05-107", "odi-2023-08-30-151", "odi-2025-11-14-102", "p76whi7nds7s73uq6h6q", "pr6db0x2xl4t51lt9uw1", "q0e42l7s8bnqpjmfk2ho", "qoaaf2dmv1i2bfsk80cn", "s4r8rfbt345r6k3xr21s", "s783d89a1080o070fwno", "t20-2021-04-14-122", "t20-2022-09-22-110", "t20-2023-04-15-101", "t4fywcyffchxmp39vxid", "t5lo6y7kt07p8sgve395", "test-2018-11-24-127", "test-2019-11-21-104", "test-2019-12-11-102", "test-2019-12-19-100", "test-2020-02-07-143", "test-2022-03-12-196", "test-2022-07-16-119", "test-2022-12-01-136", "test-2022-12-26-161", "w3mx0bm2he6wf1uwxi6y", "wiks9b1a003234zu2vaw", "wltu9ubo1mli9lspsk86", "z87csqmb3a45en757qg6", "za7o5kcrnbcpa1posx8f", "zi5clb0p4n857bhoxycn"]);
+function centuryRows(){
+  const list=hundreds.filter(h=>!COUNTED_CENTURIES.has(h.id)&&h.fmt&&n(h.runs)>0).sort((x,y)=>String(x.date).localeCompare(String(y.date)));
+  const seen=[],out=[];
+  for(const h of list){
+    const t=Date.parse(h.date)||0,g=String(h.ground||"").toLowerCase(),opp=String(h.opp||"").trim();
+    const same=h.fmt==="Test"&&seen.some(p=>p.opp===opp&&p.g===g&&Math.abs(p.t-t)<=5*864e5);seen.push({opp,g,t});
+    const base={fmt:h.fmt,mat:same?0:1,inns:1,no:h.notOut?1:0,runs:n(h.runs),bf:h.balls===null||h.balls===undefined||h.balls===""?null:n(h.balls),h100:1,h50:0,f4:n(h.f4),f6:n(h.f6),hs:n(h.runs)+(h.notOut?"*":""),fromCentury:true};
+    if(opp)out.push({...base,kind:"team",name:opp});
+    if(h.host)out.push({...base,kind:"host",name:String(h.host).trim()});
+    if(h.venue)out.push({...base,kind:"venue",name:h.venue});
+  }
+  return out;
+}
+function mergeAgg(){
+  const m=new Map(aggBase.map(r=>[r.fmt+"|"+r.kind+"|"+String(r.name).toLowerCase(),{...r,fromCenturies:0}]));
+  for(const c of centuryRows()){
+    const k=c.fmt+"|"+c.kind+"|"+c.name.toLowerCase();let r=m.get(k);
+    if(!r){r={fmt:c.fmt,kind:c.kind,name:c.name,order:999,mat:0,inns:0,no:0,runs:0,bf:0,h100:0,h50:0,f4:0,f6:0,hs:"",fromCenturies:0};m.set(k,r)}
+    for(const f of ["mat","inns","no","runs","h100","f4","f6"])r[f]=n(r[f])+n(c[f]);
+    if(c.bf===null)r.bf=null;else if(r.bf!==null&&r.bf!==undefined&&r.bf!=="")r.bf=n(r.bf)+c.bf;
+    const hv=v=>{const x=String(v||"").match(/\d+/);return x?Number(x[0]):-1};if(hv(c.hs)>hv(r.hs))r.hs=c.hs;
+    r.fromCenturies++;
+  }
+  agg=[...m.values()];
+}
 let edit=null; // {key, draft:[...]}
 let bTeam="All", bFmt="All", bMode="cards";
 
@@ -349,6 +377,7 @@ function total(rows){
   }
   const outs=a.outs;a.avg=outs>0?a.runs/outs:null;a.sr=a.bfKnown&&a.bf>0?a.runs/a.bf*100:null;return a;
 }
+const rowsOfBase=(fmt,kind)=>aggBase.filter(r=>r.fmt===fmt&&r.kind===kind).sort((x,y)=>n(x.order)-n(y.order)||String(x.name).localeCompare(y.name));
 const rowsOf=(fmt,kind)=>agg.filter(r=>r.fmt===fmt&&r.kind===kind).sort((x,y)=>n(x.order)-n(y.order)||String(x.name).localeCompare(y.name));
 const fmtsFor=f=>f==="ALL"?FMTS:[f];
 function cell(a,k){
@@ -396,6 +425,7 @@ function aggTableHtml(fmt,kind){
   const rows=rowsOf(fmt,kind),tot=total(rows);
   let h=`<div class="tbl-block" id="tb-${fmt}-${kind}"><div class="tbl-title"><div><h3>${K.title}</h3></div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${editBar(key,K.add)}</div></div><div class="tbl-wrap">`;
   if(isEdit){
+    {const nc=rowsOf(fmt,kind).reduce((t,r)=>t+n(r.fromCenturies),0);if(nc)h+=`<p class="hint" style="margin:10px 12px">These are your own numbers. ${nc} centur${nc>1?"ies":"y"} from the Centuries tab ${nc>1?"are":"is"} added on top automatically, so don't type them in here.</p>`;}
     h+=`<table class="grid"><thead><tr><th style="text-align:left">${K.first}</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}<th></th></tr></thead><tbody>`;
     edit.draft.forEach((r,i)=>{if(r._del)return;const a=total([r]);
       h+=`<tr data-i="${i}"><td><input class="txt" data-f="name" value="${esc(r.name)}" style="min-width:140px" aria-label="Name"></td>`+
@@ -407,7 +437,7 @@ function aggTableHtml(fmt,kind){
     h+=`<table><thead><tr><th>${K.first}</th>${COLS.map(([,l])=>`<th>${l}</th>`).join("")}</tr></thead><tbody>`;
     const maxR=Math.max(1,...rows.map(r=>n(r.runs)));
     h+=rows.map(r=>{const a=total([r]);const w=Math.round(n(r.runs)/maxR*40);
-      return `<tr><td>${esc(r.name)}</td>`+COLS.map(([k])=>{const v=cell(a,k);return `<td class="${n(r.mat)===0?"zero":""}">${k==="runs"&&w>0?`<span class="bar" style="width:${w}px"></span>`:""}${v}</td>`}).join("")+"</tr>"}).join("");
+      return `<tr><td>${esc(r.name)}${r.fromCenturies?`<span style="display:block;font-size:11px;color:var(--gold-soft);font-weight:400">incl. ${r.fromCenturies} from Centuries tab</span>`:""}</td>`+COLS.map(([k])=>{const v=cell(a,k);return `<td class="${n(r.mat)===0?"zero":""}">${k==="runs"&&w>0?`<span class="bar" style="width:${w}px"></span>`:""}${v}</td>`}).join("")+"</tr>"}).join("");
     h+=`<tr class="total"><td>Total</td>${COLS.map(([k])=>`<td>${cell(tot,k)}</td>`).join("")}</tr></tbody></table>`;
     if(!rows.length)h=h.replace("</tbody>",`<tr><td colspan="13" style="text-align:center;color:var(--mute);font-family:var(--body);padding:20px">No rows yet. Press Edit, then add one.</td></tr></tbody>`);
   }
@@ -465,7 +495,7 @@ function startEdit(key){
   else if(a==="grounds")src=sortGrounds(groundRows(b)).map(r=>{const d=r.docs.find(x=>!x.virtual)||{};return {uc:r.docs.filter(x=>x.virtual).length,id:d.id,name:r.name,country:r.country,mat:d.mat??"",inns:d.inns??"",outs:d.outs??"",runs:d.runs??"",hs:d.hs??"",bf:d.bf??"",h50:d.h50??"",order:d.order??0,src:d.src||"",h100:r.a.h100}});
   else if(a==="ateams")src=ATEAMS.map(t=>{const v=aCounts(t,b);return {team:t,h100:v.h100,h50:v.h50,b100:v.b100,b50:v.b50}});
   else if(a==="bowlers")src=bowlerRowsForTable().map(x=>({id:x.id,name:x.name,team:x.team,aTeam:!!x.aTeam,order:x.order,stats:x.stats,...((x.stats||{})[b]||{})}));
-  else src=rowsOf(a,b);
+  else src=rowsOfBase(a,b);
   edit={key,draft:JSON.parse(JSON.stringify(src)),orig:JSON.stringify(src)};renderAll();
 }
 function addDraftRow(key){
@@ -873,11 +903,11 @@ window.addEventListener("beforeunload",e=>{if(edit){e.preventDefault();e.returnV
   if(!dl){$("saveCard").disabled=true;$("cardHint").textContent="Saving the card as an image is not available here."}
   if(!db){$("cardHint").textContent="Sign in to claude.ai to load and save the stats.";renderAll();return}
   let got=0;const done=()=>{if(++got>=2)loaded=true};
-  db.collection("agg").onSnapshot(s=>{agg=s.docs.map(x=>({id:x.id,...x.data()}));done();renderAll()},e=>toast("Could not load stats: "+e.message));
+  db.collection("agg").onSnapshot(s=>{aggBase=s.docs.map(x=>({id:x.id,...x.data()}));mergeAgg();done();renderAll()},e=>toast("Could not load stats: "+e.message));
   db.collection("bowlers").onSnapshot(s=>{bowlers=s.docs.map(x=>({id:x.id,...x.data()}));done();renderBowlers();renderAteams()},e=>toast("Could not load bowlers: "+e.message));
   db.collection("grounds").onSnapshot(s=>{grounds=s.docs.map(x=>({id:x.id,...x.data()}));renderGrounds();renderReport()},()=>{});
   db.collection("ateamAdj").onSnapshot(s=>{adj={};s.docs.forEach(x=>adj[x.id]=x.data());renderAteams()},()=>{});
-  db.collection("hundreds").onSnapshot(s=>{hundreds=s.docs.map(x=>({id:x.id,...x.data()}));renderReport();renderHundreds();renderGrounds()},()=>{});
+  db.collection("hundreds").onSnapshot(s=>{hundreds=s.docs.map(x=>({id:x.id,...x.data()}));mergeAgg();renderAll()},()=>{});
   db.doc("settings/profile").onSnapshot(s=>{const p=s.exists?s.data():null;photoUrl=p&&p.photo?(window.__blobUrl?window.__blobUrl(p.photo):"/_blob/"+p.photo):null;renderPhoto();renderReport()},()=>{});
 })();
 })();

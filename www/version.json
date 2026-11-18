@@ -1,9 +1,9 @@
 {
- "app": 1,
+ "app": 2,
  "data": 1,
  "files": [
   "index.html",
   "app-shim.js"
  ],
- "notes": "First release of the Babar Azam Stats Book app."
+ "notes": "New centuries you add in the Centuries tab now count everywhere: report, career totals, team, country and home/away tables."
 }
